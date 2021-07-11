@@ -15,7 +15,9 @@ codes_list = {
     '1':'exec',
     '__comment__get_os':'cid=2, does not have second part (for request)',
     'get_os':'2',
-    '2':'get_os'
+    '2':'get_os',
+    'get_software':'3',
+    '3':'get_software'
 }
 
 class Communicator:

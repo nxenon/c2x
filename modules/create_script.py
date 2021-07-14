@@ -22,7 +22,7 @@ class ScriptCreator:
 
         else:
             z_file_content = z_file_content.replace('replace_server_ip', self.lhost)
-            z_file_content = z_file_content.replace("'replace_server_port'", self.lport)
+            z_file_content = z_file_content.replace('replace_server_port', self.lport)
             new_file_content = z_file_content
 
             # create new file

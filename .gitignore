@@ -8,4 +8,4 @@ __pycache__/
 .pyc
 *.py[cod]
 *$py.class
-bot_script*.py
+bot_script*

@@ -123,12 +123,23 @@ class C2ServerGUI:
         self.lport_create_script_entry = Entry(tab_bot_script, font=('Ttahoma', 15), width=7)
         self.lport_create_script_entry.grid(row=0, column=3)
 
-        # create a separator between start button and port entry field
+        # create a separator
         separator_create_script_tab = Label(tab_bot_script, text='           ', bg='#2b313b')
         separator_create_script_tab.grid(row=0, column=5)
 
+        self.lang_variable = StringVar(tab_bot_script)
+        self.lang_variable.set('Python')  # default value
+        available_langs = ['Python', 'Go']
+
+        w = OptionMenu(tab_bot_script, self.lang_variable, *available_langs)
+        w.grid(row=0, column=6)
+
+        # create a separator
+        separator2_create_script_tab = Label(tab_bot_script, text='           ', bg='#2b313b')
+        separator2_create_script_tab.grid(row=0, column=7)
+
         create_script_button = Button(tab_bot_script)
-        create_script_button.grid(row=0, column=6)
+        create_script_button.grid(row=0, column=8)
         create_script_button.config(text='  Create  ', font=('Tahoma', 18), state='normal',
                                     command=self.button_create_script)
 
@@ -242,7 +253,7 @@ C2X is a C2/Post-Exploitation Framework for Red Teaming and Ethical Hacking
         from modules.create_script import ScriptCreator
         lhost = self.lhost_create_script_entry.get()
         lport = self.lport_create_script_entry.get()
-        script_creator = ScriptCreator(lhost=lhost, lport=lport)
+        script_creator = ScriptCreator(lhost=lhost, lport=lport, lang=self.lang_variable.get())
         script_creator.create()
 
     def push_text_in_terminal_box(self, text):

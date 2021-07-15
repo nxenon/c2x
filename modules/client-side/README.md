@@ -24,9 +24,9 @@ Go
     You have to first install Go version 1.13
     if you want the client to run in
     Linux :
-    GOOS=linux go build c2x-client.go
+    GOOS=linux go build bot_script.go
     Windows :
-    GOOS=windows go build c2x-client.go
+    GOOS=windows go build bot_script.go
     now you have c2x-client compiled.
     run it in target system and wait to connect to c2x server
 

@@ -1,0 +1,9 @@
+{
+  "app_version": "Beta",
+  "__comment__for_default_gui_geometry": "X x Y",
+  "default_gui_geometry": "924x650",
+  "web_listen_ip": "127.0.0.1",
+  "web_listen_port": "8484",
+  "web_user": "root",
+  "web_pass": "root"
+}

@@ -7,11 +7,10 @@ Banner printing script
 import json
 from colorama import Fore
 from random import randint
+from modules.get_modules import get_config_value
 
 # Version
-with open('main/core/app_info.json') as app_info_json:
-    data = json.load(app_info_json)
-    app_version = data['app_version']
+app_version = get_config_value('app_version')
 version_text = '{version : ' + app_version + '}'
 # Link to github
 github_link = 'https://github.com/nxenon/c2x'

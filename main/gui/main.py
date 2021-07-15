@@ -11,14 +11,14 @@ from tkinter import *
 import webbrowser
 from modules.server import ServerModule
 from PIL import Image, ImageTk
+from modules.get_modules import get_config_value
 
 
 class C2ServerGUI:
     def __init__(self, main_win):
-        with open('main/core/app_info.json') as app_info_json:
-            data = json.load(app_info_json)
-            self.app_version = data['app_version']  # read app version from file
-            default_geometry = data['default_gui_geometry']
+
+        self.app_version = get_config_value('app_version') # read app version from file
+        default_geometry = get_config_value('default_gui_geometry')
         # define GUI settings
         self.main_win = main_win  # main window for login
         self.main_win.title('C2X (Command & Control Toolkit)')

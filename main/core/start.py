@@ -5,8 +5,8 @@ this script is for starting program functions
 '''
 
 from main.design.banner import print_banner
-from main.gui.main import main_gui_start
+from main.design.arg_options import parse_args
 
 def start():
     print_banner()
-    main_gui_start()
+    parse_args()

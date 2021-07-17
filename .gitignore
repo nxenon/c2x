@@ -9,3 +9,4 @@ __pycache__/
 *.py[cod]
 *$py.class
 bot_script*
+**/token.txt

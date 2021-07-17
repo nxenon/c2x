@@ -8,6 +8,7 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/akamensky/argparse"
 	"github.com/matishsiao/goInfo"
 )
 
@@ -25,7 +26,17 @@ func main(){
 
 	var ip = "replace_server_ip"
 	var port = "replace_server_port"
-	var ip_and_port = ip + ":" + port
+
+	parser := argparse.NewParser("c2x-client", "Connect to Server")
+	ip_arg := parser.String("", "ip", &argparse.Options{Required: false, Help: "Server IP",
+		Default: ip})
+
+	port_arg := parser.String("", "port", &argparse.Options{Required: false, Help: "Server Port",
+		Default: port})
+
+	parser.Parse(os.Args)
+
+	ip_and_port := *ip_arg + ":" + *port_arg
 
 	connectToServer(ip_and_port)
 

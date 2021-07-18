@@ -8,12 +8,12 @@ from os.path import exists
 
 class Logger:
 
-    def __init__(self ,file_name):
+    def __init__(self ,file_name=None):
         self.file_path = ''
         if file_name == 'terminal':
             self.file_path = 'main/web/static/files/terminal.txt'
 
-        else:
+        elif file_name is None:
             self.file_path = 'main/web/static/files/terminal.txt'
 
         if not exists(self.file_path):

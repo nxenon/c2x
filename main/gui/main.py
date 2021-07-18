@@ -229,7 +229,8 @@ C2X is a C2/Post-Exploitation Framework for Red Teaming and Ethical Hacking
     def button_start_server(self):
         self.server_module = ServerModule(lip=self.listening_ip_server_entry.get(),
                                           lport=self.listening_port_server_entry.get(),
-                                          zombies_gui_tab=self.tab_bots)
+                                          zombies_gui_tab=self.tab_bots,
+                                          is_from_gui=True)
         self.server_module.start_server()
         if self.server_module.connection_status:
             self.server_socket = self.server_module.server_socket

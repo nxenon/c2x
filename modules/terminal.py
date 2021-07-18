@@ -19,19 +19,18 @@ codes_list = {
 }
 
 class Terminal:
-    def __init__(self, terminal_window_box, command, zombies_addresses_and_communicators_list, default_target):
+    def __init__(self, terminal_window_box, command, zombies_addresses_and_communicators_list, default_target ,is_from_gui):
         self.terminal_window_box = terminal_window_box
         self.command = command.strip()
         # storing clients sockets and their ips [ip:port,communicator]
         self.zombies_addresses_and_communicators_list = zombies_addresses_and_communicators_list
         self.default_target = default_target
+        self.is_from_gui = is_from_gui
 
     def interpret_command(self):
         # self.command = ''
         if self.command.startswith('!clear'):
-            self.terminal_window_box.config(state='normal')
-            self.terminal_window_box.delete('1.0', END)
-            self.terminal_window_box.config(state='disabled')
+            self.clear_terminal()
 
         elif self.command.startswith('!help'):
             help_msg = '''
@@ -89,6 +88,13 @@ Select Target           ---> -h "TARGET"
                 os_info = communicator.get_os()
                 self.push_text_in_terminal_box(text='Target {} --> {}'.format(target,os_info))
 
+    def clear_terminal(self):
+        if not self.is_from_gui:
+            return
+        self.terminal_window_box.config(state='normal')
+        self.terminal_window_box.delete('1.0', END)
+        self.terminal_window_box.config(state='disabled')
+
     def exec_command(self):
         get_command_pattern = r'!exec\s*"(.*?)"'
         command_extracted = re.findall(get_command_pattern, self.command)
@@ -134,6 +140,8 @@ Select Target           ---> -h "TARGET"
         self.push_text_in_terminal_box(text='Target {} Not Found!'.format(target))
 
     def push_text_in_terminal_box(self, text):
+        if not self.is_from_gui:
+            return
         text = text.strip() + '\n'
         self.terminal_window_box.config(state='normal')
         self.terminal_window_box.insert(END, text)

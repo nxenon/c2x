@@ -10,3 +10,5 @@ __pycache__/
 *$py.class
 bot_script*
 **/token.txt
+main/web/static/files/**
+!main/web/static/files/.keep

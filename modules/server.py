@@ -119,7 +119,7 @@ class ServerModule:
             terminal = Terminal(terminal_window_box=terminal_window_box, command=command,
                                 zombies_addresses_and_communicators_list=self.zombies_addresses_and_communicators_list,
                                 default_target=self.default_target,
-                                is_from_gui=True)
+                                is_from_gui=self.is_from_gui)
             Thread(target=terminal.interpret_command).start()
 
     def update_zombies_tab(self):

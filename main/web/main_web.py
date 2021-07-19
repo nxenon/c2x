@@ -12,9 +12,10 @@ from modules.get_modules import get_config_value
 
 # if you start the server for first time cookies will be cleared
 reset_number = 1 # 1 is restarted and 0 is not restarted
+UseSSL = None
 
-def main_web_start():
-
+def main_web_start(use_ssl):
+    UseSSL = use_ssl
     template_folder_path ='main/web/templates/'
     static_folder_path = 'main/web/static/'
     app_main = Flask('__main__' ,template_folder=template_folder_path ,static_folder=static_folder_path)
@@ -126,6 +127,8 @@ def main_web_start():
     def print_url_banner():
         sleep(1)
         flask_url_msg = '\n\tWeb interface running on http://' + str(listening_ip) + ':' + str(listening_port) + '/'
+        if UseSSL:
+            flask_url_msg = flask_url_msg.replace('http', 'https')
         print(flask_url_msg)
         print()
 
@@ -133,5 +136,7 @@ def main_web_start():
     listening_port = get_config_value(main_key='web_listen_port')
 
     Thread(target=print_url_banner).start()  # start a thread to print http url after flask headers
-
-    app_main.run(port=listening_port, host=listening_ip)
+    ssl_context = None
+    if UseSSL:
+        ssl_context = 'adhoc'
+    app_main.run(port=listening_port, host=listening_ip, ssl_context=ssl_context)

@@ -7,7 +7,7 @@ this is the script for parsing arguments
 import argparse
 
 def start_gui():
-    from main.gui.main import main_gui_start
+    from main.gui.main_gui import main_gui_start
     main_gui_start()
 
 def start_web(use_ssl):

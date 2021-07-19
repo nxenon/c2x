@@ -13,6 +13,9 @@ class Logger:
         if file_name == 'terminal':
             self.file_path = 'main/web/static/files/terminal.txt'
 
+        elif file_name == 'server':
+            self.file_path = 'main/web/static/files/server.txt'
+
         elif file_name is None:
             self.file_path = 'main/web/static/files/terminal.txt'
 

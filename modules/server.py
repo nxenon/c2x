@@ -5,11 +5,11 @@ this script is for starting server for listening and other configs
 '''
 
 import socket
-from tkinter import messagebox
 from threading import Thread
 from colorama import Fore
 from modules.communicator import Communicator
 from modules.terminal import Terminal
+from modules.get_modules import push_text_in_terminal_module,show_error
 from tkinter import *
 from PIL import Image, ImageTk
 from time import sleep
@@ -30,15 +30,16 @@ class ServerModule:
         try:
             self.listening_port = int(self.listening_port)
         except ValueError:
-            messagebox.showerror(title='Error', message='Enter a valid port 1-65535')
+            show_error(title='Error', message='Enter a valid port 1-65535', is_from_gui=self.is_from_gui)
         else:
             if (self.listening_port >= 1 and self.listening_port <= 65535):
                 self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 try:
                     self.server_socket.bind((self.listening_ip, self.listening_port))
                 except OSError:
-                    messagebox.showerror(title='Bad Port', message='Permission denied the selected port is in use by another process,'
-                                                                   ' select another port or use sudo to start program')
+                    show_error(title='Bad Port', message='Permission denied the selected port is in use by another process,'
+                                                                   ' select another port or use sudo to start program',
+                               is_from_gui=self.is_from_gui)
                     self.server_socket.close() # close connection if exists
                 else:
                     self.server_socket.listen(100)
@@ -49,7 +50,7 @@ class ServerModule:
                     Thread(target=self.accept_connections).start()
                     # yield self.server_socket # return server socket for other usages e.g. closing it
             else:
-                messagebox.showerror(title='Error', message='Enter a valid port 1-65535')
+                show_error(title='Error', message='Enter a valid port 1-65535', is_from_gui=self.is_from_gui)
 
     def accept_connections(self):
         Thread(target=self.update_zombies_tab).start()
@@ -152,12 +153,8 @@ class ServerModule:
             sleep(1)
 
     def push_text_in_terminal_box(self, text):
-        if not self.is_from_gui:
-            return
-        text = text.strip() + '\n'
-        self.terminal_window_box.config(state='normal')
-        self.terminal_window_box.insert(END, text)
-        self.terminal_window_box.config(state='disabled')
+        push_text_in_terminal_module(is_from_gui=self.is_from_gui, terminal_window_box=self.terminal_window_box,
+                                     text=text)
 
     def stop_server(self):
         self.connection_status = 0

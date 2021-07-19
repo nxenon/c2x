@@ -6,6 +6,7 @@ This script is for managing terminal requests
 
 import re
 from tkinter import *
+from modules.get_modules import push_text_in_terminal_module
 
 codes_list = {
     'exec':'1',
@@ -140,9 +141,5 @@ Select Target           ---> -h "TARGET"
         self.push_text_in_terminal_box(text='Target {} Not Found!'.format(target))
 
     def push_text_in_terminal_box(self, text):
-        if not self.is_from_gui:
-            return
-        text = text.strip() + '\n'
-        self.terminal_window_box.config(state='normal')
-        self.terminal_window_box.insert(END, text)
-        self.terminal_window_box.config(state='disabled')
+        push_text_in_terminal_module(is_from_gui=self.is_from_gui, terminal_window_box=self.terminal_window_box,
+                                     text=text)

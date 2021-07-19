@@ -4,7 +4,6 @@
 Starting Main GUI Function
 '''
 
-import json
 import tkinter as tk
 from tkinter import ttk
 from tkinter import *
@@ -12,6 +11,7 @@ import webbrowser
 from modules.server import ServerModule
 from PIL import Image, ImageTk
 from modules.get_modules import get_config_value
+from modules.get_modules import push_text_in_terminal_module
 
 
 class C2ServerGUI:
@@ -254,14 +254,12 @@ C2X is a C2/Post-Exploitation Framework for Red Teaming and Ethical Hacking
         from modules.create_script import ScriptCreator
         lhost = self.lhost_create_script_entry.get()
         lport = self.lport_create_script_entry.get()
-        script_creator = ScriptCreator(lhost=lhost, lport=lport, lang=self.lang_variable.get())
+        script_creator = ScriptCreator(lhost=lhost, lport=lport, lang=self.lang_variable.get() ,is_from_gui=True)
         script_creator.create()
 
     def push_text_in_terminal_box(self, text):
-        text = text.strip() + '\n'
-        self.terminal_window_box.config(state='normal')
-        self.terminal_window_box.insert(END, text)
-        self.terminal_window_box.config(state='disabled')
+        push_text_in_terminal_module(is_from_gui=True, terminal_window_box=self.terminal_window_box,
+                                     text=text)
 
     def exec_command(self):
         command_text = self.terminal_exec_command_box.get('1.0',END)

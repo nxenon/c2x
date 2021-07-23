@@ -4,7 +4,7 @@
 This script will be run when --web argument is set instead of gui window
 '''
 
-from flask import Flask ,request ,redirect ,render_template
+from flask import Flask ,request ,redirect ,render_template, Response
 import logging
 from time import sleep
 from threading import Thread
@@ -61,6 +61,32 @@ def main_web_start(use_ssl):
         server_web_page = ServerWebPage()
         server_ret = server_web_page.run()
         return server_ret
+
+    # Find the last line of the server.txt file
+    with open('main/web/static/files/server.txt', 'r') as file_server:
+        global index_last_log_server
+        index_last_log_server = len(file_server.readlines())
+
+    def stream_server_file():
+        # Read server.txt file and return lines
+        global index_last_log_server
+        while True:
+            with open('main/web/static/files/server.txt', 'r') as server_txt_file:
+                try:
+                    yield server_txt_file.readlines()[index_last_log_server] + '<br>'
+                    index_last_log_server += 1
+                    sleep(0.2)  # delay to show log in template
+                except Exception:
+                    continue
+
+    @app_main.route('/server_conf', methods=['POST', 'GET'])
+    def server_conf_url():
+        if not check_login:
+            return redirect('/login' ,code=302)
+        elif request.method == 'POST':
+            return 'heyyyyyyy'
+        elif request.method == 'GET':
+            return Response(stream_server_file(), mimetype="text/plain", content_type="text/event-stream")
 
     @app_main.route('/create_script')
     def create_script_url():

@@ -16,6 +16,9 @@ class Logger:
         elif file_name == 'server':
             self.file_path = 'main/web/static/files/server.txt'
 
+        elif file_name == 'create_script':
+            self.file_path = 'main/web/static/files/create_script.txt'
+
         elif file_name is None:
             self.file_path = 'main/web/static/files/terminal.txt'
 

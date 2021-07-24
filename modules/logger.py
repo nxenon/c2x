@@ -27,7 +27,7 @@ class Logger:
                 pass
 
     def create_separator(self):
-        with open(self.file_path, 'w') as file:
+        with open(self.file_path, 'a') as file:
             file.write('\n+---------------------------------+\n')
 
     def log(self, text):

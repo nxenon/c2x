@@ -15,7 +15,7 @@ from PIL import Image, ImageTk
 from time import sleep
 
 class ServerModule:
-    def __init__(self, lip, lport, zombies_gui_tab ,is_from_gui):
+    def __init__(self, lip, lport, is_from_gui, zombies_gui_tab=None):
         self.listening_ip = lip
         self.listening_port = lport
         self.connection_status = 0

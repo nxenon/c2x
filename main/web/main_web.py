@@ -9,10 +9,15 @@ import logging
 from time import sleep
 from threading import Thread
 from modules.get_modules import get_config_value
+from modules.server import ServerModule
 
 # if you start the server for first time cookies will be cleared
-reset_number = 1 # 1 is restarted and 0 is not restarted
 UseSSL = None
+
+# (global variables) for communicating between program parts
+serverModuleVar = None
+connectionStatusVar = None
+
 
 def main_web_start(use_ssl):
     UseSSL = use_ssl
@@ -81,12 +86,39 @@ def main_web_start(use_ssl):
 
     @app_main.route('/server_conf', methods=['POST', 'GET'])
     def server_conf_url():
-        if not check_login:
-            return redirect('/login' ,code=302)
-        elif request.method == 'POST':
-            return 'heyyyyyyy'
+        if request.method == 'POST':
+            return 'done server start'
+            # if request.form['lip'] and request.form['lport']:
+            #     serverModule = ServerModule(lip=request.form['lip'], lport=request.form['lport'], is_from_gui=False)
+            #     serverModule.start_server()
+            #     return 'An Error Occurred'
+
         elif request.method == 'GET':
             return Response(stream_server_file(), mimetype="text/plain", content_type="text/event-stream")
+
+    # Find the last line of the create_script file
+    with open('main/web/static/files/create_script.txt', 'r') as file_create_script:
+        global index_last_log_create_script
+        index_last_log_create_script = len(file_create_script.readlines())
+
+    def stream_create_script_file():
+        # Read create_script file and return lines
+        global index_last_log_create_script
+        while True:
+            with open('main/web/static/files/create_script.txt', 'r') as server_txt_file:
+                try:
+                    yield server_txt_file.readlines()[index_last_log_create_script] + '<br>'
+                    index_last_log_create_script += 1
+                    sleep(0.2)  # delay to show log in template
+                except Exception:
+                    continue
+
+    @app_main.route('/create_script_conf', methods=['POST', 'GET'])
+    def create_script_conf():
+        if request.method == 'POST':
+            return 'done create script'
+        elif request.method == 'GET':
+            return Response(stream_create_script_file(), mimetype="text/plain", content_type="text/event-stream")
 
     @app_main.route('/create_script')
     def create_script_url():
@@ -139,16 +171,6 @@ def main_web_start(use_ssl):
     def add_header(response):
         response.headers['Cache-Control'] = 'no-cache'  # tell browser not to cache contents
         return response
-
-    def check_reset():
-        # if server is restarted then the cookies are cleared
-        global reset_number
-        if (reset_number == 1):
-            reset_number = 0
-            if (request.cookies.get('logged_in') or (request.cookies.get('user'))):
-                return logout()
-        else:
-            return ''
 
     def print_url_banner():
         sleep(1)

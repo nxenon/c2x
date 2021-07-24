@@ -15,10 +15,16 @@ class TerminalWeb:
 
         page = self.read_page()
         page = replace_user(page=page)
-        page = page.replace('{to_replace_text}' ,'')
+        page = page.replace('{to_replace_text}', self.add_element())
         page = replace_dashboard_title(page=page, name='Terminal')
         return page
 
     def read_page(self):
         template = render_template('dashboard.html')
         return template
+
+    def add_element(self):
+        html_text = '''
+        
+        '''
+        return html_text

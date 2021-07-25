@@ -47,6 +47,7 @@ class ServerModule:
                     print('Server ' + Fore.GREEN + 'Started' + Fore.RESET +
                           '. ---> ({}:{})'.format(self.listening_ip, self.listening_port))
                     print()
+                    self.last_connection_to_close = 0
                     Thread(target=self.accept_connections).start()
                     # yield self.server_socket # return server socket for other usages e.g. closing it
             else:
@@ -54,7 +55,6 @@ class ServerModule:
 
     def accept_connections(self):
         Thread(target=self.update_zombies_tab).start()
-        self.last_connection_to_close = 0
         while True:
             if not self.connection_status:
                 break

@@ -24,7 +24,10 @@ class TerminalWeb:
         return template
 
     def add_element(self):
-        html_text = '''
-        
+        html_text = '''        
+<div class="terminal" data-content="C2X Terminal">
+  <p></p>
+</div>
+
         '''
         return html_text

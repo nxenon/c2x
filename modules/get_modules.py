@@ -7,6 +7,7 @@ this script contains modules to get data from files and return desired values
 import json
 import tkinter
 from tkinter import messagebox
+from modules.logger import Logger
 
 def get_config_value(main_key):
 
@@ -27,6 +28,10 @@ def push_text_in_terminal_module(is_from_gui, terminal_window_box, text):
     '''
     this function pushes text in terminal box gui window
     '''
+
+    logger = Logger(file_name='terminal')
+    logger.log(text=text)
+
     if not is_from_gui:
         return
     text = text.strip() + '\n'

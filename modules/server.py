@@ -13,6 +13,9 @@ from modules.get_modules import push_text_in_terminal_module,show_error
 from tkinter import *
 from PIL import Image, ImageTk
 from time import sleep
+from modules.logger import Logger
+
+serverLogger = Logger(file_name='server')
 
 class ServerModule:
     def __init__(self, lip, lport, is_from_gui, zombies_gui_tab=None):
@@ -30,16 +33,19 @@ class ServerModule:
         try:
             self.listening_port = int(self.listening_port)
         except ValueError:
-            show_error(title='Error', message='Enter a valid port 1-65535', is_from_gui=self.is_from_gui)
+            error_text = 'Enter a valid port 1-65535'
+            show_error(title='Error', message=error_text, is_from_gui=self.is_from_gui)
+            serverLogger.log(text=error_text)
         else:
             if (self.listening_port >= 1 and self.listening_port <= 65535):
                 self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 try:
                     self.server_socket.bind((self.listening_ip, self.listening_port))
                 except OSError:
-                    show_error(title='Bad Port', message='Permission denied the selected port is in use by another process,'
-                                                                   ' select another port or use sudo to start program',
-                               is_from_gui=self.is_from_gui)
+                    error_text = 'Permission denied the selected port is in use by another process select ' \
+                                 'another port or use sudo to start program'
+                    show_error(title='Bad Port', message=error_text, is_from_gui=self.is_from_gui)
+                    serverLogger.log(text=error_text)
                     self.server_socket.close() # close connection if exists
                 else:
                     self.server_socket.listen(100)
@@ -47,11 +53,14 @@ class ServerModule:
                     print('Server ' + Fore.GREEN + 'Started' + Fore.RESET +
                           '. ---> ({}:{})'.format(self.listening_ip, self.listening_port))
                     print()
+                    serverLogger.log(text='Server Started ---> ({}:{})'.format(self.listening_ip,self.listening_port))
                     self.last_connection_to_close = 0
                     Thread(target=self.accept_connections).start()
                     # yield self.server_socket # return server socket for other usages e.g. closing it
             else:
-                show_error(title='Error', message='Enter a valid port 1-65535', is_from_gui=self.is_from_gui)
+                error_text = 'Enter a valid port 1-65535'
+                show_error(title='Error', message=error_text, is_from_gui=self.is_from_gui)
+                serverLogger.log(text=error_text)
 
     def accept_connections(self):
         Thread(target=self.update_zombies_tab).start()
@@ -61,6 +70,7 @@ class ServerModule:
             client_socket, client_conn_tuple = self.server_socket.accept()
             if self.last_connection_to_close:
                 print('Server ' + Fore.RED + 'Stopped' + Fore.RESET + '.')
+                serverLogger.log(text='Server Stopped.')
                 print()
                 self.last_connection_to_close = 0
                 continue
@@ -169,5 +179,8 @@ class ServerModule:
         # connect once to localhost to finish last accept waiting
         _close_connection_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.last_connection_to_close = 1
-        _close_connection_socket.connect((self.listening_ip, self.listening_port))
-        _close_connection_socket.close()
+        try:
+            _close_connection_socket.connect((self.listening_ip, self.listening_port))
+            _close_connection_socket.close()
+        except:
+            pass

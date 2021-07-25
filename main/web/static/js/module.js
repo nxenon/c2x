@@ -2,12 +2,20 @@ var last_text_server = "";
 var last_text_create_script = "";
 
 $(document).on('submit', "#server_conf_form",function( event ) {
-  event.preventDefault();
+    event.preventDefault();
 });
 
 $(document).on('submit', "#create_script_conf_form",function( event ) {
-  event.preventDefault();
+    event.preventDefault();
 });
+
+var page_path = window.location.pathname;
+if (page_path === "/server") {
+    getServerConf()
+}
+if (page_path === '/create_script') {
+    getCreateScriptResp()
+}
 
 function getServerConf(){
     // get server conf and put it in /server url bottom div
@@ -21,22 +29,37 @@ function getServerConf(){
     xhr.send();
     setInterval(function() {
         insertText(xhr.responseText);
-    }, 500);
+    }, 1000);
 
 }
 
 function insertText(text) {
 
-    if (last_text_server != text) {
+    if (last_text_server !== text) {
         last_text_server = text;
         $('.server_conf_response').html(last_text_server);
    }
 
 }
 
+$(document).on("click", ".stop_server_event", function( event ) {
+
+    var url = $("#server_conf_form").attr('action') + "_stop";
+    var method = $("#server_conf_form").attr('method');
+
+    $.ajax({
+        url: url,
+        method: method,
+        data: {"stop_server":"True"},
+        success: function(r) {
+        }
+        })
+
+    })
+
 $(document).on("click", ".start_server_event", function( event ) {
 
-    var url = $("#server_conf_form").attr('action');
+    var url = $("#server_conf_form").attr('action') + "_start";
     var method = $("#server_conf_form").attr('method');
     var lip = $("#lip").val();
     var lport = $("#lport").val();
@@ -58,8 +81,6 @@ $(document).on("click", ".start_server_event", function( event ) {
         }
         })
 
-    getServerConf();
-
     })
 
 function insertTextInCS(text) {
@@ -80,13 +101,13 @@ function getCreateScriptResp(){
     xhr.send();
     setInterval(function() {
         insertTextInCS(xhr.responseText);
-    }, 500);
+    }, 1000);
 
 }
 
 $(document).on("click", ".event_create_script", function( event ) {
 
-    var url_cs = $("#create_script_conf_form").attr('action');
+    var url_cs = $("#create_script_conf_form").attr('action') + "_create";
     var method_cs = $("#create_script_conf_form").attr('method');
     var localhost_createscript = $("#localhost_create_script").val();
     var localport_createscript = $("#localport_create_script").val();
@@ -115,7 +136,5 @@ $(document).on("click", ".event_create_script", function( event ) {
         }
 
     })
-
-    getCreateScriptResp();
 
 });

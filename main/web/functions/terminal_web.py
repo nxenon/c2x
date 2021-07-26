@@ -26,7 +26,9 @@ class TerminalWeb:
     def add_element(self):
         html_text = '''        
 <div class="terminal" data-content="C2X Terminal">
+    <div class="terminal-body">
   <p></p>
+    </div>
 </div>
 <br>
 <button class="btn btn-primary mb-2 clear_terminal_history">Clear Terminal History</button>

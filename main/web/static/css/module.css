@@ -18,14 +18,20 @@
   font-size: 1.4em;
   line-height: 1.2em;
   width: 76vw;
-  min-height: 390px;
+  height: 400px;
   margin-top: 25px;
   background-color: #0f3642;
   color: #b4c4c6;
-  padding: 10px;
+  padding: 0 0 0 10px;
   border-radius: 0 0 7px 7px;
   position: relative;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05), 0 0 30px 1px rgba(0, 0, 0, 0.2);
+}
+.terminal-body {
+  overflow-y: scroll;
+  height: 400px;
+  margin: 0;
+  width: 100%;
 }
 .terminal::before {
   border-radius: 7px 7px 0 0;

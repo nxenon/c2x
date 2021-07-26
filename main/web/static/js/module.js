@@ -35,9 +35,12 @@ function getTerminalOutput(){
 
 function insertTextInTerminal(text){
 
+    $('.terminal').html("<p>" + localStorage.ls_terminal_output + "</p>");
     if (last_text_terminal !== text) {
-    last_text_terminal = text;
-    $('.terminal').html("<p>" + last_text_terminal + "</p>");
+        temp_text = text.replace(last_text_terminal, ''); // set difference between text and last_text_terminal
+        last_text_terminal = text;
+        localStorage.ls_terminal_output = localStorage.ls_terminal_output + temp_text;
+        $('.terminal').html("<p>" + localStorage.ls_terminal_output + "</p>");
    }
 
 }

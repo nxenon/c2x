@@ -56,12 +56,12 @@ function getServerConf(){
     xhr.open('GET', url, true);
     xhr.send();
     setInterval(function() {
-        insertText(xhr.responseText);
+        insertTextServer(xhr.responseText);
     }, 1000);
 
 }
 
-function insertText(text) {
+function insertTextServer(text) {
 
     if (last_text_server !== text) {
         last_text_server = text;

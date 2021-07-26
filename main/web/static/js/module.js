@@ -16,10 +16,10 @@ $(document).on('submit', "#create_script_conf_form",function( event ) {
 
 var page_path = window.location.pathname;
 if (page_path === "/server") {
-    getServerConf()
+    getServerConf();
 }
 if (page_path === '/create_script') {
-    getCreateScriptResp()
+    getCreateScriptResp();
 }
 if (page_path === '/terminal') {
     getTerminalOutput();

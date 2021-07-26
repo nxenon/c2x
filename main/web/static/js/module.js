@@ -2,6 +2,10 @@ var last_text_server = "";
 var last_text_create_script = "";
 var last_text_terminal = "";
 
+if (typeof localStorage.ls_terminal_output === 'undefined'){
+    localStorage.ls_terminal_output = "";
+}
+
 $(document).on('submit', "#server_conf_form",function( event ) {
     event.preventDefault();
 });

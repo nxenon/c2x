@@ -6,6 +6,10 @@ if (typeof localStorage.ls_terminal_output === 'undefined'){
     localStorage.ls_terminal_output = "";
 }
 
+if (typeof localStorage.ls_server_output === 'undefined'){
+    localStorage.ls_server_output = "";
+}
+
 $(document).on('submit', "#server_conf_form",function( event ) {
     event.preventDefault();
 });
@@ -61,18 +65,28 @@ function getServerConf(){
     xhr.send();
     setInterval(function() {
         insertTextServer(xhr.responseText);
-    }, 1000);
+    }, 300);
 
 }
 
 function insertTextServer(text) {
 
+    $('.server_conf_response').html("<p>" + localStorage.ls_server_output + "</p>");
     if (last_text_server !== text) {
+        temp_text = text.replace(last_text_server, ''); // set difference between text and last_text_server
         last_text_server = text;
-        $('.server_conf_response').html(last_text_server);
+        localStorage.ls_server_output = localStorage.ls_server_output + temp_text;
+        $('.server_conf_response').html(localStorage.ls_server_output);
    }
 
 }
+
+$(document).on("click", ".clear_server_history", function( event ) {
+
+    localStorage.removeItem("ls_server_output");
+    localStorage.ls_server_output = "";
+
+})
 
 $(document).on("click", ".stop_server_event", function( event ) {
 

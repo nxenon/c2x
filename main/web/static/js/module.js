@@ -1,5 +1,6 @@
 var last_text_server = "";
 var last_text_create_script = "";
+var last_text_terminal = "";
 
 $(document).on('submit', "#server_conf_form",function( event ) {
     event.preventDefault();
@@ -15,6 +16,30 @@ if (page_path === "/server") {
 }
 if (page_path === '/create_script') {
     getCreateScriptResp()
+}
+if (page_path === '/terminal') {
+    getTerminalOutput();
+}
+
+function getTerminalOutput(){
+
+    var url_terminal = "/terminal_get_output";
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', url_terminal, true);
+    xhr.send();
+    setInterval(function() {
+        insertTextInTerminal(xhr.responseText);
+    }, 300);
+
+}
+
+function insertTextInTerminal(text){
+
+    if (last_text_terminal !== text) {
+    last_text_terminal = text;
+    $('.terminal').html("<p>" + last_text_terminal + "</p>");
+   }
+
 }
 
 function getServerConf(){

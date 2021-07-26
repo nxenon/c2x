@@ -125,9 +125,9 @@ def main_web_start(use_ssl):
         # Read create_script file and return lines
         global index_last_log_create_script
         while True:
-            with open('main/web/static/files/create_script.txt', 'r') as server_txt_file:
+            with open('main/web/static/files/create_script.txt', 'r') as create_script_file:
                 try:
-                    yield server_txt_file.readlines()[index_last_log_create_script] + '<br>'
+                    yield create_script_file.readlines()[index_last_log_create_script] + '<br>'
                     index_last_log_create_script += 1
                     sleep(0.2)  # delay to show log in template
                 except Exception:
@@ -177,6 +177,26 @@ def main_web_start(use_ssl):
         from main.web.functions.terminal_web import TerminalWeb
         terminal_web_ret = TerminalWeb().run()
         return terminal_web_ret
+
+    with open('main/web/static/files/terminal.txt', 'r') as file_terminal:
+        global index_last_log_terminal
+        index_last_log_terminal = len(file_terminal.readlines())
+
+    def stream_terminal_file():
+        # Read terminal file and return lines
+        global index_last_log_terminal
+        while True:
+            with open('main/web/static/files/terminal.txt', 'r') as terminal_txt_file:
+                try:
+                    yield terminal_txt_file.readlines()[index_last_log_terminal] + '<br>'
+                    index_last_log_terminal += 1
+                    sleep(0.2)  # delay to show log in template
+                except Exception:
+                    continue
+
+    @app_main.route('/terminal_get_output', methods=['GET'])
+    def terminal_get_output_url():
+        return Response(stream_terminal_file(), mimetype="text/plain", content_type="text/event-stream")
 
     @app_main.route('/logout')
     def logout():

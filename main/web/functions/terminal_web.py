@@ -28,6 +28,8 @@ class TerminalWeb:
 <div class="terminal" data-content="C2X Terminal">
   <p></p>
 </div>
+<br>
+<button class="btn btn-primary mb-2 clear_terminal_history">Clear Terminal History</button>
 
         '''
         return html_text

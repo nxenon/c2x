@@ -85,6 +85,13 @@ $(document).on("click", ".stop_server_event", function( event ) {
 
     })
 
+$(document).on("click", ".clear_terminal_history", function ( event ) {
+
+    localStorage.removeItem("ls_terminal_output");
+    localStorage.ls_terminal_output = "";
+
+    })
+
 $(document).on("click", ".start_server_event", function( event ) {
 
     var url = $("#server_conf_form").attr('action') + "_start";

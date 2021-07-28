@@ -140,7 +140,8 @@ def main_web_start(use_ssl):
 
     @app_main.route('/create_script_conf', methods=['GET'])
     def create_script_conf():
-         return Response(stream_create_script_file(), mimetype="text/plain", content_type="text/event-stream")
+        from main.web.functions.create_script_web import create_script_conf_func
+        return create_script_conf_func(streamer_function=stream_create_script_file)
 
     @app_main.route('/create_script_conf_create', methods=['POST'])
     def create_script_create_url():

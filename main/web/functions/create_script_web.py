@@ -4,7 +4,7 @@
 this script is for /create_script page
 '''
 
-from flask import render_template,redirect,request,send_from_directory
+from flask import render_template,redirect,request,send_from_directory,Response
 from main.web.functions.web_modules import check_login ,replace_user ,replace_dashboard_title
 from modules.create_script import ScriptCreator
 
@@ -74,3 +74,11 @@ def create_script_create_url_func():
     script_creator.create()
 
     return 'CreateScript Request Sent'
+
+def create_script_conf_func(streamer_function):
+    # streamer function is for get lines from create_script.py
+
+    if not (check_login()):  # check if user is logged in ,returns true if is logged in
+        return redirect('/login', code=302)
+
+    return Response(streamer_function(), mimetype="text/plain", content_type="text/event-stream")

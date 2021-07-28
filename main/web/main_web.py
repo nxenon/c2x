@@ -74,6 +74,14 @@ def main_web_start(use_ssl):
         server_ret = server_web_page.run()
         return server_ret
 
+    @app_main.route('/server_conf_check', methods=['GET'])
+    def server_conf_check_url():
+        if ((serverModuleVar is not None) and (serverModuleVar.connection_status)):
+            temp_list = [serverModuleVar.listening_ip, serverModuleVar.listening_port]
+            return jsonify(temp_list)
+
+        return 'Server Check Request Sent'
+
     # Find the last line of the server.txt file
     with open('main/web/static/files/server.txt', 'r') as file_server:
         global index_last_log_server

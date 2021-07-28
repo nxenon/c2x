@@ -17,6 +17,10 @@
   color: limegreen;
   font-size:18px;
 }
+.show_server_status{
+  color: black;
+  font-size: 13px;
+}
 
 /* terminal */
 @import url("https://fonts.googleapis.com/css?family=PT+Mono&subset=cyrillic");

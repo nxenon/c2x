@@ -37,6 +37,9 @@ class ServerWebPage:
       <button class="btn btn-primary mb-2 start_server_event">Start</button>
       <button class="btn btn-danger mb-2 stop_server_event" disabled>Stop</button>
     </form>
+    
+    <p class="show_server_status"></p>
+    
     <button class="btn btn-dark my-1 clear_server_history">Clear Server History</button>
     
     <div class="server_conf_response my-5"></div>

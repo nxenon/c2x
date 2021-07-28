@@ -100,6 +100,33 @@ function insertTextInTerminal(text){
 
 }
 
+function setServerConnStatusOutput(resp){
+
+    if (resp === 'Server Check Request Sent'){
+        $('.show_server_status').html('Server LIP : None, Server LPort : None');
+    } else {
+        var lip = resp[0];
+        var lport = resp[1];
+        $('.show_server_status').html('Server LIP : ' + lip + ', Server LPort : ' + lport);
+    }
+}
+
+function getServerConnStatus(){
+
+        setInterval(function (){
+        var url_check_server_conn = "/server_conf_check";
+        $.ajax({
+            url: url_check_server_conn,
+            method: 'GET',
+            success: function(r) {
+                setServerConnStatusOutput(r);
+            }
+            })
+
+    },300);
+
+}
+
 function getServerConf(){
     // get server conf and put it in /server url bottom div
 
@@ -112,6 +139,7 @@ function getServerConf(){
     xhr.send();
     setInterval(function() {
         insertTextServer(xhr.responseText);
+        getServerConnStatus();
     }, 300);
 
 }

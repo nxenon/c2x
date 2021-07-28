@@ -108,14 +108,15 @@ def main_web_start(use_ssl):
 
         return 'Request StopServer Sent'
 
+    def server_conf_start_set_server_module(lip, lport):
+        global serverModuleVar
+        serverModuleVar = ServerModule(lip=lip, lport=lport, is_from_gui=False)
+        serverModuleVar.start_server()
+
     @app_main.route('/server_conf_start', methods=['POST'])
     def server_conf_start_url():
-        global serverModuleVar
-        if request.form['lip'] and request.form['lport']:
-            serverModuleVar = ServerModule(lip=request.form['lip'], lport=request.form['lport'], is_from_gui=False)
-            serverModuleVar.start_server()
-
-        return 'Request ServerStart Sent'
+        from main.web.functions.server_web import server_conf_start_url_func
+        return server_conf_start_url_func(set_server_module_var_func=server_conf_start_set_server_module)
 
     @app_main.route('/server_conf', methods=['GET'])
     def server_conf_url():

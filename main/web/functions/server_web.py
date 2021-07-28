@@ -4,7 +4,7 @@
 function for managing /server url
 '''
 
-from flask import render_template ,redirect, jsonify, Response
+from flask import render_template ,redirect, jsonify, Response, request
 from main.web.functions.web_modules import replace_user ,check_login ,replace_dashboard_title
 
 class ServerWebPage:
@@ -64,3 +64,12 @@ def server_conf_url_func(streamer_function):
 
     return Response(streamer_function(), mimetype="text/plain", content_type="text/event-stream")
 
+def server_conf_start_url_func(set_server_module_var_func):
+
+    if not (check_login()):  # check if user is logged in ,returns true if is logged in
+        return redirect('/login', code=302)
+
+    if request.form['lip'] and request.form['lport']:
+        set_server_module_var_func(lip=request.form['lip'], lport=request.form['lport'])
+
+    return 'Request ServerStart Sent'

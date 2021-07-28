@@ -158,18 +158,8 @@ def main_web_start(use_ssl):
 
     @app_main.route('/download_script')
     def download_script_url():
-
-        allowed_langs = ['py','go']
-        if request.args.get('script_lang'):
-            script_lang = request.args.get('script_lang')
-            if script_lang in allowed_langs:
-                script_name = 'bot_script.{}'.format(script_lang)
-                return send_from_directory(directory=app_main.root_path, path=script_name)
-
-            else:
-                return 'Language Not Found'
-        else:
-            return 'Language Not Found'
+        from main.web.functions.create_script_web import download_script_url_func
+        return download_script_url_func(app_main)
 
     @app_main.route('/zombies')
     def zombies_url():

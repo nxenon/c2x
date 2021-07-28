@@ -4,7 +4,7 @@
 this script is for /create_script page
 '''
 
-from flask import render_template,redirect
+from flask import render_template,redirect,request,send_from_directory
 from main.web.functions.web_modules import check_login ,replace_user ,replace_dashboard_title
 
 class CreateScriptWeb:
@@ -45,3 +45,20 @@ class CreateScriptWeb:
     <div class="server_create_script_response my-5"></div>
             '''
         return html_text
+
+def download_script_url_func(flask_app):
+
+    if (not check_login()):
+        return redirect('/login', code=302)
+
+    allowed_langs = ['py', 'go']
+    if request.args.get('script_lang'):
+        script_lang = request.args.get('script_lang')
+        if script_lang in allowed_langs:
+            script_name = 'bot_script.{}'.format(script_lang)
+            return send_from_directory(directory=flask_app.root_path, path=script_name)
+
+        else:
+            return 'Language Not Found'
+    else:
+        return 'Language Not Found'

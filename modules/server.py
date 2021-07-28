@@ -111,7 +111,7 @@ class ServerModule:
             index = self.zombies_addresses_and_communicators_list.index(client_address_and_communicator)
             self.zombies_addresses_and_communicators_list[index][2]['os_info'] = ' (OS : {}) '.format(os_info)
 
-    def send_command_from_terminal(self, terminal_window_box, command):
+    def send_command_from_terminal(self, command, terminal_window_box=None):
         self.terminal_window_box = terminal_window_box
         set_target_pattern = r'!set (.*) (.*)'
         command = command.lower()

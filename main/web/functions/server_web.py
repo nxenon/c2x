@@ -73,3 +73,18 @@ def server_conf_start_url_func(set_server_module_var_func):
         set_server_module_var_func(lip=request.form['lip'], lport=request.form['lport'])
 
     return 'Request ServerStart Sent'
+
+def server_conf_stop_url_func(server_module_var, server_logger_var):
+    # server_module_var is serverModuleVar global var
+    # server_logger_var is serverLogger global var for write text in server.txt
+    if not check_login():
+        return redirect('/login', code=302)
+
+    if request.form['stop_server']:
+        if request.form['stop_server'] == 'True':
+            try:
+                server_module_var.stop_server()
+            except AttributeError:
+                server_logger_var.log(text='Start The Server First')
+
+    return 'Request StopServer Sent'

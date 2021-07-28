@@ -98,15 +98,9 @@ def main_web_start(use_ssl):
 
     @app_main.route('/server_conf_stop', methods=['POST'])
     def server_conf_stop_url():
+        from main.web.functions.server_web import server_conf_stop_url_func
         global serverModuleVar
-        if request.form['stop_server']:
-            if request.form['stop_server'] == 'True':
-                try:
-                    serverModuleVar.stop_server()
-                except AttributeError:
-                    serverLogger.log(text='Start The Server First')
-
-        return 'Request StopServer Sent'
+        return server_conf_stop_url_func(server_module_var=serverModuleVar, server_logger_var=serverLogger)
 
     def server_conf_start_set_server_module(lip, lport):
         global serverModuleVar

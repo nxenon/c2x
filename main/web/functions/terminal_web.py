@@ -4,7 +4,7 @@
 this script is for /terminal page
 '''
 
-from flask import render_template,redirect
+from flask import render_template,redirect,Response
 from main.web.functions.web_modules import check_login ,replace_user ,replace_dashboard_title
 
 class TerminalWeb:
@@ -35,3 +35,11 @@ class TerminalWeb:
 
         '''
         return html_text
+
+def terminal_get_output_url_func(streamer_function):
+    # streamer_function is function for get terminal.txt file
+
+    if not (check_login()):  # check if user is logged in ,returns true if is logged in
+        return redirect('/login', code=302)
+
+    return Response(streamer_function(), mimetype="text/plain", content_type="text/event-stream")

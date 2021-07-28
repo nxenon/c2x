@@ -196,7 +196,8 @@ def main_web_start(use_ssl):
 
     @app_main.route('/terminal_get_output', methods=['GET'])
     def terminal_get_output_url():
-        return Response(stream_terminal_file(), mimetype="text/plain", content_type="text/event-stream")
+        from main.web.functions.terminal_web import terminal_get_output_url_func
+        return terminal_get_output_url_func(streamer_function=stream_terminal_file)
 
     @app_main.route('/logout')
     def logout():

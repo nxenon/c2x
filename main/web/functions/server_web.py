@@ -4,7 +4,7 @@
 function for managing /server url
 '''
 
-from flask import render_template ,redirect
+from flask import render_template ,redirect, jsonify
 from main.web.functions.web_modules import replace_user ,check_login ,replace_dashboard_title
 
 class ServerWebPage:
@@ -45,3 +45,13 @@ class ServerWebPage:
     <div class="server_conf_response my-5"></div>
             '''
         return html_text
+
+def server_conn_check_func(server_module_var):
+    if not check_login():
+        return redirect('/login', code=302)
+
+    if ((server_module_var is not None) and (server_module_var.connection_status)):
+        temp_list = [server_module_var.listening_ip, server_module_var.listening_port]
+        return jsonify(temp_list)
+
+    return 'Server Check Request Sent'

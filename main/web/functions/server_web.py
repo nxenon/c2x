@@ -4,7 +4,7 @@
 function for managing /server url
 '''
 
-from flask import render_template ,redirect, jsonify
+from flask import render_template ,redirect, jsonify, Response
 from main.web.functions.web_modules import replace_user ,check_login ,replace_dashboard_title
 
 class ServerWebPage:
@@ -55,3 +55,12 @@ def server_conn_check_func(server_module_var):
         return jsonify(temp_list)
 
     return 'Server Check Request Sent'
+
+def server_conf_url_func(streamer_function):
+    # streamer_function param is for get lines from server.txt file
+
+    if not (check_login()):  # check if user is logged in ,returns true if is logged in
+        return redirect('/login', code=302)
+
+    return Response(streamer_function(), mimetype="text/plain", content_type="text/event-stream")
+

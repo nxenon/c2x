@@ -119,7 +119,8 @@ def main_web_start(use_ssl):
 
     @app_main.route('/server_conf', methods=['GET'])
     def server_conf_url():
-        return Response(stream_server_file(), mimetype="text/plain", content_type="text/event-stream")
+        from main.web.functions.server_web import server_conf_url_func
+        server_conf_url_func(streamer_function=stream_server_file)
 
     # Find the last line of the create_script file
     with open('main/web/static/files/create_script.txt', 'r') as file_create_script:

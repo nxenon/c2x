@@ -144,11 +144,8 @@ def main_web_start(use_ssl):
 
     @app_main.route('/create_script_conf_create', methods=['POST'])
     def create_script_create_url():
-        script_creator = ScriptCreator(lhost=request.form['localhost'], lport=request.form['localport'],
-                                       lang=request.form['lang_create_script'], is_from_gui=False)
-        script_creator.create()
-
-        return 'CreateScript Request Sent'
+        from main.web.functions.create_script_web import create_script_create_url_func
+        return create_script_create_url_func()
 
     @app_main.route('/create_script')
     def create_script_url():

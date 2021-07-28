@@ -6,6 +6,7 @@ this script is for /create_script page
 
 from flask import render_template,redirect,request,send_from_directory
 from main.web.functions.web_modules import check_login ,replace_user ,replace_dashboard_title
+from modules.create_script import ScriptCreator
 
 class CreateScriptWeb:
 
@@ -62,3 +63,14 @@ def download_script_url_func(flask_app):
             return 'Language Not Found'
     else:
         return 'Language Not Found'
+
+def create_script_create_url_func():
+
+    if not (check_login()):  # check if user is logged in ,returns true if is logged in
+        return redirect('/login', code=302)
+
+    script_creator = ScriptCreator(lhost=request.form['localhost'], lport=request.form['localport'],
+                                   lang=request.form['lang_create_script'], is_from_gui=False)
+    script_creator.create()
+
+    return 'CreateScript Request Sent'

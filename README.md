@@ -9,7 +9,7 @@ C2X is a C2/Post-Exploitation Framework for Red Teaming and Ethical Hacking.
 
 Screenshots
 ----
-![Screenshot](https://user-images.githubusercontent.com/61124903/125159935-a208f100-e18f-11eb-839b-464b4302b323.png)
+![Screenshot](https://user-images.githubusercontent.com/61124903/127577653-92b93102-1e06-413e-baa3-6e1bb3a6110a.png)
 
 ![Screenshot_terminal](https://user-images.githubusercontent.com/61124903/127573401-1e881b5c-21f2-437f-b4f7-c9f499fc70a2.png)
 

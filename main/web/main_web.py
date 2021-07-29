@@ -11,7 +11,7 @@ from threading import Thread
 from modules.get_modules import get_config_value
 from modules.server import ServerModule
 from modules.logger import Logger
-
+from main.web.functions.flask_with_new_banner import FlaskWithNewBanner
 
 # if you start the server for first time cookies will be cleared
 UseSSL = None
@@ -25,7 +25,7 @@ def main_web_start(use_ssl):
     UseSSL = use_ssl
     template_folder_path ='main/web/templates/'
     static_folder_path = 'main/web/static/'
-    app_main = Flask('__main__' ,template_folder=template_folder_path ,static_folder=static_folder_path)
+    app_main = FlaskWithNewBanner('__main__' ,template_folder=template_folder_path ,static_folder=static_folder_path)
 
     # set upload dir
     UPLOAD_FOLDER = './'
@@ -233,7 +233,7 @@ def main_web_start(use_ssl):
         return response
 
     def print_url_banner():
-        sleep(1)
+        sleep(0.1)
         flask_url_msg = '\n\tWeb interface running on http://' + str(listening_ip) + ':' + str(listening_port) + '/'
         if UseSSL:
             flask_url_msg = flask_url_msg.replace('http', 'https')

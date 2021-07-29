@@ -4,7 +4,7 @@
 this script is for /terminal page
 '''
 
-from flask import render_template,redirect,Response
+from flask import render_template,redirect,Response,request
 from main.web.functions.web_modules import check_login ,replace_user ,replace_dashboard_title
 
 class TerminalWeb:
@@ -43,3 +43,14 @@ def terminal_get_output_url_func(streamer_function):
         return redirect('/login', code=302)
 
     return Response(streamer_function(), mimetype="text/plain", content_type="text/event-stream")
+
+def send_terminal_cmd_func(server_module_var):
+
+    if not (check_login()):  # check if user is logged in ,returns true if is logged in
+        return redirect('/login', code=302)
+
+    if request.form['cmd']:
+        command = request.form['cmd']
+        server_module_var.send_command_from_terminal(command=command)
+
+    return 'Command Request Sent'

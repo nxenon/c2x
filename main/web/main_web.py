@@ -188,6 +188,12 @@ def main_web_start(use_ssl):
                 except Exception:
                     continue
 
+    @app_main.route('/send_terminal_cmd', methods=['POST'])
+    def send_terminal_cmd_url():
+        from main.web.functions.terminal_web import send_terminal_cmd_func
+        global serverModuleVar
+        return send_terminal_cmd_func(server_module_var=serverModuleVar)
+
     @app_main.route('/terminal_get_output', methods=['GET'])
     def terminal_get_output_url():
         from main.web.functions.terminal_web import terminal_get_output_url_func

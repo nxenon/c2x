@@ -6,6 +6,9 @@ this script is for /terminal page
 
 from flask import render_template,redirect,Response,request
 from main.web.functions.web_modules import check_login ,replace_user ,replace_dashboard_title
+from modules.logger import Logger
+
+terminalLogger = Logger(file_name='terminal')
 
 class TerminalWeb:
 
@@ -24,7 +27,14 @@ class TerminalWeb:
         return template
 
     def add_element(self):
-        html_text = '''        
+        html_text = '''
+
+<div class="form-group mb-2">
+    <label class="sr-only">Terminal Command</label>
+    <input type="text" class="form-control command_input" placeholder="Command" required>
+</div>
+    <button class="btn btn-success mb-2 my-3 event_send_cmd">Execute</button>
+                
 <div class="terminal" data-content="C2X Terminal">
     <div class="terminal-body">
   <p></p>
@@ -51,6 +61,9 @@ def send_terminal_cmd_func(server_module_var):
 
     if request.form['cmd']:
         command = request.form['cmd']
-        server_module_var.send_command_from_terminal(command=command)
+        try:
+            server_module_var.send_command_from_terminal(command=command)
+        except AttributeError:
+            terminalLogger.log(text='First Start the Server !')
 
     return 'Command Request Sent'

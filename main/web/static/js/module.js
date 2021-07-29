@@ -33,6 +33,26 @@ if (page_path === '/zombies'){
     getZombiesList();
 }
 
+$(document).on("click", ".event_send_cmd", function( event ) {
+
+    sendCommandToServer();
+
+})
+
+function sendCommandToServer(){
+
+    var cmd = $('.command_input').val();
+
+    var url_send_cmd = '/send_terminal_cmd';
+    $.ajax({
+    url: url_send_cmd,
+    method: 'POST',
+    data: {"cmd":cmd},
+    success: function(r) {}
+    })
+
+}
+
 function getZombiesList(){
     setInterval(function (){
         var url_get_zombies = "/get_zombies";

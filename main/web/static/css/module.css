@@ -21,6 +21,9 @@
   color: black;
   font-size: 13px;
 }
+.command_input{
+  color: black!important;
+}
 
 /* terminal */
 @import url("https://fonts.googleapis.com/css?family=PT+Mono&subset=cyrillic");

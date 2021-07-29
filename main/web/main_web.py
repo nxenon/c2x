@@ -11,8 +11,7 @@ from threading import Thread
 from modules.get_modules import get_config_value
 from modules.server import ServerModule
 from modules.logger import Logger
-from modules.create_script import ScriptCreator
-import os
+
 
 # if you start the server for first time cookies will be cleared
 UseSSL = None

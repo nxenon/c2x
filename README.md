@@ -11,6 +11,8 @@ Screenshots
 ----
 ![Screenshot](https://user-images.githubusercontent.com/61124903/125159935-a208f100-e18f-11eb-839b-464b4302b323.png)
 
+![Screenshot_terminal](https://user-images.githubusercontent.com/61124903/127573401-1e881b5c-21f2-437f-b4f7-c9f499fc70a2.png)
+
 Installation
 ----
     git clone https://github.com/nxenon/c2x.git
@@ -19,25 +21,44 @@ Installation
     
 Usage
 ----
-    python3 c2x.py
-    1) Go to Server Tab and start the server
-    2) Go to Create Script Tab
-    3) Create Script for your target bots
-    4) In Zombies Tab you can see connected targets
-    5) Go to Terminal Tab and write !help and execute it
+    python3 c2x.py --web [recommended option]
+    or
+    python3 c2x.py --gui [is not recommended]
+    --gui will be removed in newer versions of C2X
 
-
-![Terminal](https://user-images.githubusercontent.com/61124903/125159140-d62de300-e18a-11eb-895c-dad9262ae7fa.png)
-
-Create Scripts
+Web Interface [Recommended]
 ----
 
-![Screenshot_Create_script](https://user-images.githubusercontent.com/61124903/125632382-60309b73-4ced-456e-95b0-64a5f2c015ce.png)
+[Web README and Screenshots](https://github.com/nxenon/c2x/blob/main/main/web/README.md)
 
-
-- [ClientSide README](https://github.com/nxenon/c2x/blob/main/modules/client-side/README.md)
-
-Watch Zombies
+GUI Interface [Not Recommended]
 ----
 
-![ZombiesTab](https://user-images.githubusercontent.com/61124903/125634713-d6d6076a-2d06-4030-a4af-520d6d8dbb54.png)
+[GUI README and Screenshots](https://github.com/nxenon/c2x/blob/main/main/gui/README.md)
+
+Help
+----
+      .oooooo.     .oooo.   oonoooo  ooooo
+     d8P'  `Y8b  .dP""Y88b   `8x88    d8'
+    888                ]8P'    Ye88..8P
+    888              .d8P'      `8n88'
+    888            .dP'        .8PYo88.       {version : Beta}
+    `88b    ooo  .oP     .o   d8'  `n88b      https://github.com/nxenon/c2x
+     `-nxenon-'  8888888888 o888o  o88888o
+    
+    usage: python3 c2x.py --web or --gui
+     help: python3 c2x.py --help
+      Web: python3 c2x.py --web
+      GUI: python3 c2x.py --gui
+    
+    optional arguments:
+      -h, --help   show this help message and exit
+      --gui        Start GUI Window
+      --web        Start Web Interface
+      --use-https  Enable HTTPS for Web Interface
+
+Configuration
+----
+All of project configuration params are in main/core/config.json file which you can change them.
+
+[config.json](https://github.com/nxenon/c2x/blob/main/main/core/config.json)

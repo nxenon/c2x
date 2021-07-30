@@ -33,6 +33,8 @@ Create Script Page
 ----
 ![CreateScript_sc](https://user-images.githubusercontent.com/61124903/127575808-a5fe59ed-32d6-422b-9c0f-45d1f090e752.png)
 
+- [Client Side README](https://github.com/nxenon/c2x/blob/main/modules/client-side/README.md)
+
 Zombies Page
 ----
 ![Zombies_sc](https://user-images.githubusercontent.com/61124903/127576536-d696dab8-2fee-4042-9a83-efa95b8ef639.png)

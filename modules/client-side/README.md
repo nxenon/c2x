@@ -2,8 +2,15 @@
 
 Client side scripts will be stored in this directory
 
+Web Interface
+----
+
+![CreateScript_sc](https://user-images.githubusercontent.com/61124903/127575808-a5fe59ed-32d6-422b-9c0f-45d1f090e752.png)
+
 GUI
 ----
+Using GUI is not recommended.
+
 ![Screenshot](https://user-images.githubusercontent.com/61124903/125632382-60309b73-4ced-456e-95b0-64a5f2c015ce.png)
 
 After you have created script it will be in root of project.

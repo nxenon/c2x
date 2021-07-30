@@ -31,6 +31,12 @@ Web Interface [Recommended]
 
 [Web README and Screenshots](https://github.com/nxenon/c2x/blob/main/main/web/README.md)
 
+Client Side
+----
+You need some instructions for running client side codes after creating your scripts:
+
+[Client Side README](https://github.com/nxenon/c2x/blob/main/modules/client-side/README.md)
+
 GUI Interface [Not Recommended]
 ----
 

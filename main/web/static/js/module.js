@@ -42,7 +42,9 @@ $(document).on("click", ".event_send_cmd", function( event ) {
 function sendCommandToServer(){
 
     var cmd = $('.command_input').val();
-
+    if (cmd === '!clear'){
+        clear_terminal();
+    }
     var url_send_cmd = '/send_terminal_cmd';
     $.ajax({
     url: url_send_cmd,
@@ -193,10 +195,16 @@ $(document).on("click", ".stop_server_event", function( event ) {
 
 $(document).on("click", ".clear_terminal_history", function ( event ) {
 
+    clear_terminal();
+
+    })
+
+function clear_terminal(){
+
     localStorage.removeItem("ls_terminal_output");
     localStorage.ls_terminal_output = "";
 
-    })
+}
 
 $(document).on("click", ".start_server_event", function( event ) {
 

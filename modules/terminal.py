@@ -108,7 +108,10 @@ Select Target           ---> -h "TARGET"
                     reply = communicator.msg_manager(msg='cid=' + codes_list['exec'] + ',{}'.format(command_extracted),
                                                      has_reply=True)
                     get_cid_pattern = r'cid=(\d*),'
-                    cid = re.findall(get_cid_pattern, reply)
+                    try:
+                        cid = re.findall(get_cid_pattern, reply)
+                    except TypeError:
+                        return
                     if len(cid) == 1:
                         cid = cid[0]
                         if codes_list[cid] == 'exec':

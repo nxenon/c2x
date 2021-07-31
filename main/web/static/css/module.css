@@ -24,6 +24,10 @@
 .command_input{
   color: black!important;
 }
+.terminal_get_default_target{
+  color: #363535;
+  font-size: 15px;
+}
 
 /* terminal */
 @import url("https://fonts.googleapis.com/css?family=PT+Mono&subset=cyrillic");

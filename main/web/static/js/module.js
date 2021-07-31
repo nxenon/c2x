@@ -104,6 +104,7 @@ function getTerminalOutput(){
     xhr.send();
     setInterval(function() {
         insertTextInTerminal(xhr.responseText);
+        terminalGetDefaultTarget();
     }, 300);
 
 }
@@ -121,6 +122,25 @@ function insertTextInTerminal(text){
             document.querySelector(".terminal-body").scrollHeight;
 
    }
+
+}
+
+function terminalGetDefaultTarget(){
+
+    var url_get_default_target = "/terminal_get_default_target";
+    $.ajax({
+        url: url_get_default_target,
+        method: 'GET',
+        success: function(r) {
+            terminalShowDefaultTarget(r);
+        }
+        })
+
+}
+
+function terminalShowDefaultTarget(dtarget){
+
+    $('.terminal_get_default_target').html('Default Target --> ' + dtarget[0])
 
 }
 

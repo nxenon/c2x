@@ -4,7 +4,7 @@
 this script is for /terminal page
 '''
 
-from flask import render_template,redirect,Response,request
+from flask import render_template,redirect,Response,request,jsonify
 from main.web.functions.web_modules import check_login ,replace_user ,replace_dashboard_title
 from modules.logger import Logger
 
@@ -33,6 +33,7 @@ class TerminalWeb:
     <label class="sr-only">Terminal Command</label>
     <input type="text" class="form-control command_input" placeholder="Command" required>
 </div>
+    <p class="terminal_get_default_target">Default Target --> None</p>
     <button class="btn btn-success mb-2 my-3 event_send_cmd">Execute</button>
                 
 <div class="terminal" data-content="C2X Terminal">
@@ -67,3 +68,19 @@ def send_terminal_cmd_func(server_module_var):
             terminalLogger.log(text='First Start the Server !')
 
     return 'Command Request Sent'
+
+def terminal_get_default_target_func(server_module_var):
+
+    if not (check_login()):  # check if user is logged in ,returns true if is logged in
+        return redirect('/login', code=302)
+
+    temp_list = []
+
+    if ((server_module_var is not None) and (server_module_var.default_target is not None)):
+
+        temp_list = [server_module_var.default_target]
+
+    else:
+        temp_list = ['None']
+
+    return jsonify(temp_list)

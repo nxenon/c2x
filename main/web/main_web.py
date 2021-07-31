@@ -198,6 +198,11 @@ def main_web_start(use_ssl):
         from main.web.functions.terminal_web import terminal_get_output_url_func
         return terminal_get_output_url_func(streamer_function=stream_terminal_file)
 
+    @app_main.route('/terminal_get_default_target', methods=['GET'])
+    def terminal_get_default_target_url():
+        from main.web.functions.terminal_web import terminal_get_default_target_func
+        return terminal_get_default_target_func(server_module_var=serverModuleVar)
+
     @app_main.route('/logout')
     def logout():
         from main.web.functions.logout import logout

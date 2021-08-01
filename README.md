@@ -11,7 +11,7 @@ Screenshots
 ----
 ![Screenshot](https://user-images.githubusercontent.com/61124903/127577653-92b93102-1e06-413e-baa3-6e1bb3a6110a.png)
 
-![Screenshot_terminal](https://user-images.githubusercontent.com/61124903/127736452-ea809ae6-1d4f-4a04-9052-349fb9ac9326.png)
+![Screenshot_terminal](https://user-images.githubusercontent.com/61124903/127780339-bc852540-919b-4977-a257-d037731fad5d.png)
 
 Installation
 ----

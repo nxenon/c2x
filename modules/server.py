@@ -115,7 +115,7 @@ class ServerModule:
 
     def send_command_from_terminal(self, command, terminal_window_box=None):
         self.terminal_window_box = terminal_window_box
-        set_target_pattern = r'!set (.*) (.*)'
+        set_target_pattern = r'!set (.*) "(.*)"'
         command = command.lower()
         if command.startswith('!set'):
             # !set target 192.168.1.23:5656

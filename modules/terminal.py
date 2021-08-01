@@ -43,7 +43,7 @@ class Terminal:
 !exec "COMMAND"         ---> execute command
 Example: !exec "ls" -h "192.168.1.100:49700"
 Select Target           ---> -h "TARGET" -h "TARGET2"
-!set target TARGET      ---> set default target
+!set target "TARGET"    ---> set default target
 !get-zombies            ---> get connected zombies
 !software               ---> get target installed software
 !whoami                 ---> get logged in user

@@ -41,6 +41,7 @@ class ServerModule:
             if (self.listening_port >= 1 and self.listening_port <= 65535):
                 self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 try:
+                    self.server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
                     self.server_socket.bind((self.listening_ip, self.listening_port))
                 except OSError:
                     error_text = 'Permission denied the selected port is in use by another process select ' \

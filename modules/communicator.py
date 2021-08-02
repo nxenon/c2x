@@ -17,7 +17,10 @@ codes_list = {
     'get_os':'2',
     '2':'get_os',
     'get_software':'3',
-    '3':'get_software'
+    '3':'get_software',
+    '__comment__get_whoami': 'cid=4, does not have second part (for request)',
+    '4': 'get_whoami',
+    'get_whoami': '4'
 }
 
 class Communicator:

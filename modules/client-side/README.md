@@ -25,6 +25,9 @@ Python
     Run the bot_script.py with python3 in target system
     python3 bot_script.py
 
+
+Other instructions for Python client-side script [here](https://github.com/nxenon/c2x-client-py) 
+
 Go
 ----
     For go lang you have to first compile the code created

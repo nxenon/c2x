@@ -267,7 +267,7 @@ C2X is a C2/Post-Exploitation Framework for Red Teaming and Ethical Hacking
         self.terminal_window_box.config(state='normal')
         self.terminal_window_box.insert(END,command_text.strip() + '\n')
         self.terminal_window_box.config(state='disabled')
-        self.server_module.send_command_from_terminal(self.terminal_window_box, command_text)
+        self.server_module.send_command_from_terminal(terminal_window_box=self.terminal_window_box, command=command_text)
 
 def main_gui_start():
     root = tk.Tk()

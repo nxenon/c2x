@@ -40,6 +40,8 @@ func main(){
 	ip_and_port := *ip_arg + ":" + *port_arg
 
 	for true {
+		gotHello = false
+		clientSocket = nil
 		connectToServer(ip_and_port)
 		time.Sleep(3 * time.Second)
 	}

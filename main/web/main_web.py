@@ -4,7 +4,7 @@
 This script will be run when --web argument is set instead of gui window
 '''
 
-from flask import Flask ,request ,redirect ,render_template, Response, send_from_directory, jsonify
+from flask import request, redirect, render_template
 import logging
 from time import sleep
 from threading import Thread

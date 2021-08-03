@@ -103,8 +103,9 @@ def main_web_start(use_ssl):
 
     def server_conf_start_set_server_module(lip, lport):
         global serverModuleVar
-        serverModuleVar = ServerModule(lip=lip, lport=lport, is_from_gui=False)
-        serverModuleVar.start_server()
+        if ((serverModuleVar is None) or (not serverModuleVar.connection_status)):
+            serverModuleVar = ServerModule(lip=lip, lport=lport, is_from_gui=False)
+            serverModuleVar.start_server()
 
     @app_main.route('/server_conf_start', methods=['POST'])
     def server_conf_start_url():

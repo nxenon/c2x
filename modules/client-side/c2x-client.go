@@ -57,7 +57,9 @@ func connectToServer(ip_and_port string){
 		return
 	}
 	clientSocket = c
+	clientSocket.SetReadDeadline(time.Now().Add(3 * time.Second))
 	receiveReply()
+	clientSocket.Close()
 
 }
 
@@ -82,6 +84,7 @@ func commandInterpreter(reply string){
 		if reply == "c2x-hello" {
 			sendHelloBack()
 			gotHello = true
+			clientSocket.SetReadDeadline(time.Time{})
 		} else {
 			clientSocket.Close()
 			// Connection closed! (haven't received c2x-hello)

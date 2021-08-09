@@ -76,7 +76,7 @@ var zombies_text = ""; // store zombies text address and OS info
 function checkGetZombiesOutput(resp){
     zombies_text = "";
     if (resp === 'Get Zombies Request Sent' || resp.length === 0){
-        $('.get_zombies_response').html('There is No Connected Zombies!');
+        $('.get_zombies_response').html('There is No Connected Zombie!');
     } else {
         resp.forEach(iterateInZombiesArray);
         insertTextInZombiesPage();

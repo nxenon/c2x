@@ -4,7 +4,7 @@
 this script checks the login information
 '''
 
-from flask import redirect,make_response
+from flask import redirect,make_response,request
 from modules.get_modules import get_config_value
 import datetime
 from random import randint
@@ -33,12 +33,12 @@ class CheckLogin:
         if ((self.username_in_app) and (self.password_in_app)):
             pass
         else:
-            print(Fore.RED + '[!]' + Fore.RESET + ' web login failed')
+            print(Fore.RED + '[!]' + Fore.RESET + ' web login failed ---> ' + request.remote_addr)
             return redirect('/login?error=nof') # nof is for no credential found in config.json
 
     def check_login(self):
         if ((self.username_in_app.lower() == self.username_in_login.lower()) and (self.password_in_app == self.password_in_login)):
-            print(Fore.GREEN + '[+]' + Fore.RESET + ' web login succeeded')
+            print(Fore.GREEN + '[+]' + Fore.RESET + ' web login succeeded ---> ' + request.remote_addr)
             response = make_response(redirect('/dashboard' ,code=302))
             created_token = self.create_random_token()
             self.save_token(token=created_token)
@@ -47,7 +47,7 @@ class CheckLogin:
             response.set_cookie('logged_in' ,'yes' ,expires=datetime.datetime.now() + datetime.timedelta(days=30))
             return response
         else:
-            print(Fore.RED + '[!]' + Fore.RESET + ' web login failed')
+            print(Fore.RED + '[!]' + Fore.RESET + ' web login failed ---> ' + request.remote_addr)
             return redirect('login?error=lf' ,code=302)
 
     def create_random_token(self):

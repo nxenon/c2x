@@ -53,8 +53,6 @@ function sendCommandToServer(){
     success: function(r) {}
     })
 
-    localStorage.ls_terminal_output += "<p>" + cmd + "</p>";
-
 }
 
 function getZombiesList(){
@@ -111,12 +109,17 @@ function getTerminalOutput(){
 
 function insertTextInTerminal(text){
 
-    $('.terminal-body').html("<p>" + localStorage.ls_terminal_output + "</p>");
+    if (localStorage.ls_terminal_output.length === 0){
+        $('.terminal-body').html("<p></p>");
+    } else{
+        $('.terminal-body').html(localStorage.ls_terminal_output);
+    }
+
     if (last_text_terminal !== text) {
         temp_text = text.replace(last_text_terminal, ''); // set difference between text and last_text_terminal
         last_text_terminal = text;
         localStorage.ls_terminal_output = localStorage.ls_terminal_output + temp_text;
-        $('.terminal-body').html("<p>" + localStorage.ls_terminal_output + "</p>");
+        $('.terminal-body').html(localStorage.ls_terminal_output);
 
         document.querySelector(".terminal-body").scrollTop =
             document.querySelector(".terminal-body").scrollHeight;

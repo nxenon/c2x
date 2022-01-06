@@ -7,6 +7,13 @@
 
 C2X is a C2/Post-Exploitation Framework for Red Teaming and Ethical Hacking.
 
+C2X HTTP(S) Version [Recommended]
+----
+
+There is a newer project of c2x that works on HTTP & HTTPS.
+
+[C2X-HTTP Project](https://github.com/nxenon/c2x-http)
+
 Screenshots
 ----
 ![Screenshot](https://user-images.githubusercontent.com/61124903/127577653-92b93102-1e06-413e-baa3-6e1bb3a6110a.png)
